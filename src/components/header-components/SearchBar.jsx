@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-
+import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 import fetchAPI from '../../services/fetchAPI';
 
 function SearchBar() {
   const [searchBarInput, setSearchBarInput] = useState('');
-  const { mealOrDrink } = useContext(RecipesContext);
+  const { mealOrDrink, setRecipes } = useContext(RecipesContext);
+  const history = useHistory();
 
   function handleInput({ target }) {
     const { value } = target;
@@ -43,7 +44,24 @@ function SearchBar() {
   async function fecthByUrl() {
     const urlToFetch = getUrlByEndpoint();
     const response = await fetchAPI(urlToFetch);
-    return console.log(response);
+    console.log(response);
+
+    return response;
+  }
+
+  async function addToRecipesContext() {
+    const response = await fecthByUrl();
+    const scheme = {
+      themealdb: ['meals', 'comidas', 'idMeal'],
+      thecocktaildb: ['drinks', 'bebidas', 'idDrink'],
+    };
+    const recipes = response[scheme[mealOrDrink][0]];
+
+    setRecipes(response);
+
+    if (recipes.length === 1) {
+      history.push(`/${scheme[mealOrDrink][1]}/${recipes[0][scheme[mealOrDrink][2]]}`);
+    }
   }
 
   return (
@@ -89,11 +107,10 @@ function SearchBar() {
 
         <button
           data-testid="exec-search-btn"
-          onClick={ () => { fecthByUrl(); } }
+          onClick={ addToRecipesContext }
           type="button"
         >
           Buscar
-
         </button>
       </form>
     </div>
