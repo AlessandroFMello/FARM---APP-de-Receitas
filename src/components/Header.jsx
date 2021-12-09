@@ -11,12 +11,11 @@ function Header(props) {
 
   const { pageName } = props;
 
-  const toggleApi = {
-    Bebidas: 'thecocktaildb',
-    Comidas: 'themealdb',
-  };
-
   useEffect(() => {
+    const toggleApi = {
+      Bebidas: 'thecocktaildb',
+      Comidas: 'themealdb',
+    };
     setMealOrDrink(toggleApi[pageName]);
   }, [pageName, setMealOrDrink]);
 
