@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Header from '../components/Header';
 
-function Meals() {
-  const pageName = 'Comidas';
+function Drinks() {
+  const pageName = 'Bebidas';
 
   return (
     <div>
@@ -12,10 +12,10 @@ function Meals() {
   );
 }
 
-Meals.propTypes = {
+Drinks.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
 };
 
-export default Meals;
+export default Drinks;
