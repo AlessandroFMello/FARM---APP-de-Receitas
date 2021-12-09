@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import foodGif from '../images/foodGif.gif';
 
 function LoginPage({ history }) {
@@ -37,33 +39,34 @@ function LoginPage({ history }) {
       <div className="login-items-container">
         <img className="login-gif" src={ foodGif } alt="foodGif" />
         <form className="login-form" onSubmit={ (e) => onSubmitLogin(e) }>
-          <label htmlFor="email">
-            <input
+          <Form.Label htmlFor="email">
+            <Form.Control
               data-testid="email-input"
               id="email"
               onChange={ ({ target }) => setEmail({ email: target.value }) }
-              placeholder="email"
+              placeholder="E-mail"
               type="email"
               value={ email.email }
             />
-          </label>
-          <label htmlFor="password">
-            <input
+          </Form.Label>
+          <Form.Label htmlFor="password">
+            <Form.Control
               data-testid="password-input"
               id="password"
               onChange={ ({ target }) => setPassword({ password: target.value }) }
-              placeholder="password"
+              placeholder="Senha"
               type="password"
               value={ password.password }
             />
-          </label>
-          <button
+          </Form.Label>
+          <Button
             data-testid="login-submit-btn"
             disabled={ validateLogin() }
             type="submit"
+            variant="success"
           >
-            Login
-          </button>
+            Entrar
+          </Button>
         </form>
       </div>
     </div>
