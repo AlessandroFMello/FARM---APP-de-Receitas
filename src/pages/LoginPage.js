@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import foodGif from '../images/foodGif.gif';
 
 function LoginPage({ history }) {
   const [email, setEmail] = useState({
@@ -32,35 +33,40 @@ function LoginPage({ history }) {
   }
 
   return (
-    <form className="login-form" onSubmit={ (e) => onSubmitLogin(e) }>
-      <label htmlFor="email">
-        <input
-          data-testid="email-input"
-          id="email"
-          onChange={ ({ target }) => setEmail({ email: target.value }) }
-          placeholder="email"
-          type="email"
-          value={ email.email }
-        />
-      </label>
-      <label htmlFor="password">
-        <input
-          data-testid="password-input"
-          id="password"
-          onChange={ ({ target }) => setPassword({ password: target.value }) }
-          placeholder="password"
-          type="password"
-          value={ password.password }
-        />
-      </label>
-      <button
-        data-testid="login-submit-btn"
-        disabled={ validateLogin() }
-        type="submit"
-      >
-        Login
-      </button>
-    </form>
+    <div className="login-page-container">
+      <div className="login-items-container">
+        <img className="login-gif" src={ foodGif } alt="foodGif" />
+        <form className="login-form" onSubmit={ (e) => onSubmitLogin(e) }>
+          <label htmlFor="email">
+            <input
+              data-testid="email-input"
+              id="email"
+              onChange={ ({ target }) => setEmail({ email: target.value }) }
+              placeholder="email"
+              type="email"
+              value={ email.email }
+            />
+          </label>
+          <label htmlFor="password">
+            <input
+              data-testid="password-input"
+              id="password"
+              onChange={ ({ target }) => setPassword({ password: target.value }) }
+              placeholder="password"
+              type="password"
+              value={ password.password }
+            />
+          </label>
+          <button
+            data-testid="login-submit-btn"
+            disabled={ validateLogin() }
+            type="submit"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 

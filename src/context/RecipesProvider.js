@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import RecipesContext from './RecipesContex';
+import RecipesContext from './RecipesContext';
 
 function PlanetsProvider({ children }) {
   const [state, setState] = useState([]);
