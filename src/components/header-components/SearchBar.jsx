@@ -1,11 +1,46 @@
-import React from 'react';
-// import fetchAPI from '../../services/fetchAPI';
+import React, { useState } from 'react';
+import fetchAPI from '../../services/fetchAPI';
 
 function SearchBar() {
+  const [searchBarInput, setSearchBarInput] = useState('');
+
+  function handleInput({ target }) {
+    const { value } = target;
+    setSearchBarInput(value);
+  }
+
   function getRadioEndpoint() {
     const radios = [...document.querySelectorAll('.search-bar-radio')];
     const checkedRadio = radios.find((radio) => radio.checked);
     return checkedRadio.value;
+  }
+
+  function getUrlByEndpoint() {
+    const endpoint = getRadioEndpoint();
+    let url;
+    const firstLetterConditional = (searchBarInput.length > 1
+      && endpoint === 'primeira-letra')
+      ? global.alert('Sua busca deve conter somente 1 (um) caracter')
+      : url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchBarInput}`;
+
+    switch (endpoint) {
+    case 'ingrediente':
+      url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchBarInput}`;
+      return url;
+    case 'nome':
+      url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchBarInput}`;
+      return url;
+    case 'primeira-letra':
+      return firstLetterConditional;
+    default:
+      return 'no endpoint';
+    }
+  }
+
+  async function fecthByUrl() {
+    const urlToFetch = getUrlByEndpoint();
+    const response = await fetchAPI(urlToFetch);
+    return console.log(response);
   }
 
   return (
@@ -15,6 +50,7 @@ function SearchBar() {
           <input
             type="text"
             data-testid="search-input"
+            onChange={ handleInput }
           />
         </label>
         <label htmlFor="search-bar-radio">
@@ -50,7 +86,7 @@ function SearchBar() {
 
         <button
           data-testid="exec-search-btn"
-          onClick={ () => { console.log(getRadioEndpoint()); } }
+          onClick={ () => { fecthByUrl(); } }
           type="button"
         >
           Buscar
