@@ -4,10 +4,13 @@ import RecipesContext from './RecipesContext';
 
 function PlanetsProvider({ children }) {
   const [state, setState] = useState([]);
+  const [mealOrDrink, setMealOrDrink] = useState('');
 
   const context = {
     state,
     setState,
+    mealOrDrink,
+    setMealOrDrink,
   };
 
   return (
