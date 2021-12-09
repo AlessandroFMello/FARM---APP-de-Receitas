@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
+import RecipesContext from '../../context/RecipesContext';
 import fetchAPI from '../../services/fetchAPI';
 
 function SearchBar() {
   const [searchBarInput, setSearchBarInput] = useState('');
+  const { mealOrDrink } = useContext(RecipesContext);
 
   function handleInput({ target }) {
     const { value } = target;
@@ -21,14 +24,14 @@ function SearchBar() {
     const firstLetterConditional = (searchBarInput.length > 1
       && endpoint === 'primeira-letra')
       ? global.alert('Sua busca deve conter somente 1 (um) caracter')
-      : url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchBarInput}`;
+      : url = `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?f=${searchBarInput}`;
 
     switch (endpoint) {
     case 'ingrediente':
-      url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchBarInput}`;
+      url = `https://www.${mealOrDrink}.com/api/json/v1/1/filter.php?i=${searchBarInput}`;
       return url;
     case 'nome':
-      url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchBarInput}`;
+      url = `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?s=${searchBarInput}`;
       return url;
     case 'primeira-letra':
       return firstLetterConditional;
