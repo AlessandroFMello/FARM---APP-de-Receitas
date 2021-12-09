@@ -1,4 +1,5 @@
 * {
+  border: 0;
   margin: 0;
   padding: 0;
 }
@@ -23,10 +24,12 @@ body {
 .login-items-container {
   align-items: center;
   background-color: rgba(219, 218, 218, 0.726);
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  height: 500px;
+  justify-content: space-around;
+  width: 300px;
 }
 
 .login-form {
@@ -36,11 +39,16 @@ body {
   justify-content: center;
 }
 
+.login-form input {
+  text-align: center;
+}
+
 .login-gif {
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   height: 250px;
+  opacity: 0.9;
   width: 250px;
 }
 
@@ -62,4 +70,16 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.footer {
+  align-items: center;
+  background-color: rgb(218, 218, 218);
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  justify-content: space-around;
+  position: fixed;
+  width: 100vw;
 }

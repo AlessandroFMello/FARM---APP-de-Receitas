@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ExploreHeader from '../components/ExploreHeader';
+import Footer from '../components/Footer';
 
 function ExploreMeals() {
   const pageName = 'Explorar Comidas';
@@ -8,6 +9,7 @@ function ExploreMeals() {
   return (
     <div>
       <ExploreHeader pageName={ pageName } />
+      <Footer />
     </div>
   );
 }
