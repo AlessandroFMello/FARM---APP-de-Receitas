@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import RecipesContext from './RecipesContext';
 
 function PlanetsProvider({ children }) {
-  const [state, setState] = useState([]);
+  const [recipes, setRecipes] = useState({});
   const [mealOrDrink, setMealOrDrink] = useState('');
 
   const context = {
-    state,
-    setState,
+    recipes,
+    setRecipes,
     mealOrDrink,
     setMealOrDrink,
   };
