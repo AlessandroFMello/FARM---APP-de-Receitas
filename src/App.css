@@ -57,7 +57,7 @@ body {
   justify-content: space-between;
 }
 
-.search-bar{
+.search-bar {
   align-items: center;
   display: flex;
   flex-direction: column;
