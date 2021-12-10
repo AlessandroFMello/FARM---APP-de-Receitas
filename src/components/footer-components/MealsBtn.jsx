@@ -5,15 +5,12 @@ import mealIcon from '../../images/mealIcon.svg';
 function MealsBtn() {
   return (
     <Link to="/comidas">
-      <button
-        type="button"
-      >
-        <img
-          data-testid="food-bottom-btn"
-          src={ mealIcon }
-          alt="meals"
-        />
-      </button>
+      <input
+        type="image"
+        data-testid="food-bottom-btn"
+        src={ mealIcon }
+        alt="meals"
+      />
     </Link>
   );
 }

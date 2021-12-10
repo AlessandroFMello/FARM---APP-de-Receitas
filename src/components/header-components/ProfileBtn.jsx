@@ -7,16 +7,13 @@ function ProfileBtn() {
   return (
     <div>
       <Link to="/perfil">
-        <button
-          type="button"
+        <input
+          type="image"
           className="profile-top-btn"
-        >
-          <img
-            src={ profileIcon }
-            alt="profileIcon"
-            data-testid="profile-top-btn"
-          />
-        </button>
+          src={ profileIcon }
+          alt="profileIcon"
+          data-testid="profile-top-btn"
+        />
       </Link>
     </div>
   );
