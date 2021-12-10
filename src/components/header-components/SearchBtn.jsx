@@ -7,7 +7,7 @@ function SearchBtn(props) {
 
   return (
     <div>
-        <input
+      <input
         data-testid="search-top-btn"
         type="image"
         onClick={ displaySearchBar }
