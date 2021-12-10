@@ -7,16 +7,13 @@ function SearchBtn(props) {
 
   return (
     <div>
-      <button
-        type="button"
+        <input
+        data-testid="search-top-btn"
+        type="image"
         onClick={ displaySearchBar }
-      >
-        <img
-          data-testid="search-top-btn"
-          src={ searchIcon }
-          alt="searchIcon"
-        />
-      </button>
+        src={ searchIcon }
+        alt="searchIcon"
+      />
     </div>
   );
 }
