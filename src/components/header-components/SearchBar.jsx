@@ -14,44 +14,25 @@ function SearchBar() {
     setSearchBarInput(value);
   }
 
-  function getRadioEndpoint() {
-    const radios = [...document.querySelectorAll('.search-bar-radio')];
-    const checkedRadio = radios.find((radio) => radio.checked);
-    return checkedRadio.value;
-  }
-
   function getUrlByEndpoint() {
-    const endpoint = getRadioEndpoint();
-    let url;
-    const firstLetterConditional = (searchBarInput.length > 1
-      && endpoint === 'primeira-letra')
-      ? global.alert('Sua busca deve conter somente 1 (um) caracter')
-      : url = `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?f=${searchBarInput}`;
+    const urlByEndpoint = {
+      ingrediente: `https://www.${mealOrDrink}.com/api/json/v1/1/filter.php?i=${searchBarInput}`,
+      nome: `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?s=${searchBarInput}`,
+      primeiraLetra: `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?f=${searchBarInput}`,
+    };
 
-    switch (endpoint) {
-    case 'ingrediente':
-      url = `https://www.${mealOrDrink}.com/api/json/v1/1/filter.php?i=${searchBarInput}`;
-      return url;
-    case 'nome':
-      url = `https://www.${mealOrDrink}.com/api/json/v1/1/search.php?s=${searchBarInput}`;
-      return url;
-    case 'primeira-letra':
-      return firstLetterConditional;
-    default:
-      return 'no endpoint';
-    }
+    return urlByEndpoint[radioValue];
   }
 
   async function fecthByUrl() {
     const urlToFetch = getUrlByEndpoint();
     const response = await fetchAPI(urlToFetch);
-    console.log(response);
+    console.log('Resposta do fetch', response);
 
     return response;
   }
 
-  async function addToRecipesContext(event) {
-    event.preventDefault();
+  async function addToRecipesContext() {
     const response = await fecthByUrl();
     const scheme = {
       themealdb: ['meals', 'comidas', 'idMeal'],
@@ -66,9 +47,19 @@ function SearchBar() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (radioValue === 'primeiraLetra' && searchBarInput.length > 1) {
+      global.alert('Sua busca deve conter somente 1 (um) caracter');
+    } else {
+      addToRecipesContext();
+    }
+  }
+
   return (
     <div>
-      <form className="search-bar" onSubmit={ addToRecipesContext }>
+      <form className="search-bar" onSubmit={ handleSubmit }>
         <label htmlFor="search-input">
           <input
             type="text"
@@ -110,8 +101,8 @@ function SearchBar() {
             data-testid="first-letter-search-radio"
             id="primeira-letra"
             name="search-bar-radio"
-            value="primeira-letra"
-            checked={ radioValue === 'primeira-letra' }
+            value="primeiraLetra"
+            checked={ radioValue === 'primeiraLetra' }
             onChange={ (e) => setRadioValue(e.target.value) }
           />
           Primeira Letra
