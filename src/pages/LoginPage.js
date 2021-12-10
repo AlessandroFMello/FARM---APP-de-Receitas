@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -11,11 +11,6 @@ function LoginPage({ history }) {
   const [password, setPassword] = useState({
     password: '',
   });
-
-  useEffect(() => {
-    localStorage.setItem('mealsToken', JSON.stringify(null));
-    localStorage.setItem('cocktailsToken', JSON.stringify(null));
-  }, []);
 
   function validateLogin() {
     const regexEmail = /\S+@\S+\.\S+/;

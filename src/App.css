@@ -83,3 +83,12 @@ body {
   position: fixed;
   width: 100vw;
 }
+
+.recipe-card {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.recipe-card img {
+  width: 50%;
+}
