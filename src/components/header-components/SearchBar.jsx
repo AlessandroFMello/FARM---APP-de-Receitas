@@ -50,7 +50,8 @@ function SearchBar() {
     return response;
   }
 
-  async function addToRecipesContext() {
+  async function addToRecipesContext(event) {
+    event.preventDefault();
     const response = await fecthByUrl();
     const scheme = {
       themealdb: ['meals', 'comidas', 'idMeal'],
@@ -67,7 +68,7 @@ function SearchBar() {
 
   return (
     <div>
-      <form className="search-bar">
+      <form className="search-bar" onSubmit={ addToRecipesContext }>
         <label htmlFor="search-input">
           <input
             type="text"
@@ -117,9 +118,8 @@ function SearchBar() {
         </label>
 
         <button
-          type="button"
+          type="submit"
           data-testid="exec-search-btn"
-          onClick={ addToRecipesContext }
         >
           Buscar
         </button>
