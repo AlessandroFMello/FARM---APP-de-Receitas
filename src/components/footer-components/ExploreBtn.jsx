@@ -5,15 +5,12 @@ import exploreIcon from '../../images/exploreIcon.svg';
 function ExploreBtn() {
   return (
     <Link to="/explorar">
-      <button
-        type="button"
-      >
-        <img
-          data-testid="explore-bottom-btn"
-          src={ exploreIcon }
-          alt="explore"
-        />
-      </button>
+      <input
+        type="image"
+        data-testid="explore-bottom-btn"
+        src={ exploreIcon }
+        alt="explore"
+      />
     </Link>
   );
 }

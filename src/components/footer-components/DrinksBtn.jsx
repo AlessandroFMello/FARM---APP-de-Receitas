@@ -5,15 +5,12 @@ import drinkIcon from '../../images/drinkIcon.svg';
 function DrinksBtn() {
   return (
     <Link to="/bebidas">
-      <button
-        type="button"
-      >
-        <img
-          data-testid="drinks-bottom-btn"
-          src={ drinkIcon }
-          alt="drinks"
-        />
-      </button>
+      <input
+        type="image"
+        data-testid="drinks-bottom-btn"
+        src={ drinkIcon }
+        alt="drinks"
+      />
     </Link>
   );
 }
