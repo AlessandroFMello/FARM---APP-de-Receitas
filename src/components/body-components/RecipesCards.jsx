@@ -1,12 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import RecipesContext from '../../context/RecipesContext';
 
-function RecipesCards() {
+function RecipesCards({ recipeType }) {
   const { initialFetch, initialFetchObject, recipes } = useContext(RecipesContext);
-  const history = useHistory();
-
-  const recipeType = history.location.pathname.includes('bebidas') ? 'drinks' : 'meals';
 
   useEffect(() => {
     initialFetch();
@@ -57,5 +54,9 @@ function RecipesCards() {
     </section>
   );
 }
+
+RecipesCards.propTypes = {
+  recipeType: PropTypes.oneOf(['meals', 'drinks']).isRequired,
+};
 
 export default RecipesCards;
