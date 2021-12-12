@@ -42,6 +42,10 @@ function SearchBar() {
 
     setRecipes(response);
 
+    if (recipes.length === 0) {
+      global.alert('Sinto muito, não encontramos nenhuma receita para esses filtros.');
+    }
+
     if (recipes.length === 1) {
       history.push(`/${scheme[mealOrDrink][1]}/${recipes[0][scheme[mealOrDrink][2]]}`);
     }
