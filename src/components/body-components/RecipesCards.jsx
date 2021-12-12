@@ -1,28 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCards() {
-  const { recipes } = useContext(RecipesContext);
-  const [recipeType] = Object.keys(recipes);
+  const { initialFetch, initialFetchObject, recipes } = useContext(RecipesContext);
+  const history = useHistory();
+
+  const recipeType = history.location.pathname.includes('bebidas') ? 'drinks' : 'meals';
+
+  useEffect(() => {
+    initialFetch();
+    console.log('[RecipesCards] initialFetch');
+  }, [initialFetch]);
 
   function getRecipeThumb(recipe) {
-    if (recipe.strDrinkThumb) return recipe.strDrinkThumb;
-    if (recipe.strMealThumb) return recipe.strMealThumb;
+    if (recipeType === 'drinks') return recipe.strDrinkThumb;
+    if (recipeType === 'meals') return recipe.strMealThumb;
   }
 
   function getRecipeName(recipe) {
-    if (recipe.strDrink) return recipe.strDrink;
-    if (recipe.strMeal) return recipe.strMeal;
+    if (recipeType === 'drinks') return recipe.strDrink;
+    if (recipeType === 'meals') return recipe.strMeal;
   }
 
   function getRecipeId(recipe) {
-    if (recipe.idDrink) return recipe.idDrink;
-    if (recipe.idMeal) return recipe.idMeal;
+    if (recipeType === 'drinks') return recipe.idDrink;
+    if (recipeType === 'meals') return recipe.idMeal;
   }
 
   function getRecipeCards() {
     const MAX_CARDS = 12;
-    const recipesToRender = recipes[recipeType].slice(0, MAX_CARDS);
+    let recipesToRender = recipes[recipeType] || initialFetchObject[recipeType];
+    recipesToRender = recipesToRender.slice(0, MAX_CARDS);
 
     return (
       recipesToRender.map((recipe, index) => (
@@ -44,7 +53,7 @@ function RecipesCards() {
 
   return (
     <section className="recipe-cards">
-      { recipeType !== undefined && getRecipeCards() }
+      { getRecipeCards() }
     </section>
   );
 }
