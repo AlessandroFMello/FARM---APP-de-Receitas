@@ -1,85 +1,62 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import RecipesContext from '../../context/RecipesContext';
 
-function RecipesCards() {
-  const [firstMap, setFirstMap] = useState([]);
-  const [key, setKey] = useState('');
-  const { recipes,
-    mealOrDrink,
-    initialFetchObject,
-    initialFetch,
-  } = useContext(RecipesContext);
-  const arrayRecipes = Object.keys(recipes);
-  const [recipeType] = arrayRecipes;
-  const scheme = {
-    meals: ['strMeal', 'strMealThumb'],
-    drinks: ['strDrink', 'strDrinkThumb'],
-  };
-  const verifyArrayRecipes = arrayRecipes.length > 0;
-  const MAX_CARDS = 12;
-  const arrayRenderRecipes = verifyArrayRecipes && recipes[recipeType]
-    .slice(0, MAX_CARDS);
-
-  useEffect(() => {
-    const mealOrDrinkObj = {
-      themealdb: 'meals',
-      thecocktaildb: 'drinks',
-    };
-    if (arrayRecipes.length === 0) {
-      const firstArrayRenderRecipes = initialFetchObject[mealOrDrinkObj[mealOrDrink]];
-      setKey(mealOrDrinkObj[mealOrDrink]);
-      setFirstMap(firstArrayRenderRecipes && firstArrayRenderRecipes.slice(0, MAX_CARDS));
-    }
-  }, [arrayRecipes.length, mealOrDrink, initialFetchObject]);
+function RecipesCards({ recipeType }) {
+  const { initialFetch, initialFetchObject, recipes } = useContext(RecipesContext);
 
   useEffect(() => {
     initialFetch();
+    console.log('[RecipesCards] initialFetch');
   }, [initialFetch]);
 
-  return (
-    <>
-      {
-        (arrayRecipes.length === 0 && firstMap) && firstMap.map((recipe, index) => (
-          <div
-            className="recipe-card"
-            key={ `key${index}` }
-            data-testid={ `${index}-recipe-card` }
-          >
-            <img
-              src={ recipe[scheme[key][1]] }
-              data-testid={ `${index}-card-img` }
-              alt={ recipe[scheme[key][0]] }
-            />
-            <h3
-              data-testid={ `${index}-card-name` }
-            >
-              { recipe[scheme[key][0]] }
-              {console.log('aqui')}
-            </h3>
-          </div>
-        ))
-      }
-      { verifyArrayRecipes && arrayRenderRecipes.map((recipe, index) => (
+  function getRecipeThumb(recipe) {
+    if (recipeType === 'drinks') return recipe.strDrinkThumb;
+    if (recipeType === 'meals') return recipe.strMealThumb;
+  }
 
+  function getRecipeName(recipe) {
+    if (recipeType === 'drinks') return recipe.strDrink;
+    if (recipeType === 'meals') return recipe.strMeal;
+  }
+
+  function getRecipeId(recipe) {
+    if (recipeType === 'drinks') return recipe.idDrink;
+    if (recipeType === 'meals') return recipe.idMeal;
+  }
+
+  function getRecipeCards() {
+    const MAX_CARDS = 12;
+    let recipesToRender = recipes[recipeType] || initialFetchObject[recipeType];
+    recipesToRender = recipesToRender.slice(0, MAX_CARDS);
+
+    return (
+      recipesToRender.map((recipe, index) => (
         <div
           className="recipe-card"
-          key={ `key${index}` }
+          key={ getRecipeId(recipe) }
           data-testid={ `${index}-recipe-card` }
         >
           <img
-            src={ recipe[scheme[recipeType][1]] }
+            src={ getRecipeThumb(recipe) }
             data-testid={ `${index}-card-img` }
-            alt={ recipe[scheme[recipeType][0]] }
+            alt={ getRecipeName(recipe) }
           />
-          <h3
-            data-testid={ `${index}-card-name` }
-          >
-            { recipe[scheme[recipeType][0]] }
-          </h3>
+          <h3 data-testid={ `${index}-card-name` }>{ getRecipeName(recipe) }</h3>
         </div>
-      ))}
-    </>
+      ))
+    );
+  }
+
+  return (
+    <section className="recipe-cards">
+      { getRecipeCards() }
+    </section>
   );
 }
+
+RecipesCards.propTypes = {
+  recipeType: PropTypes.oneOf(['meals', 'drinks']).isRequired,
+};
 
 export default RecipesCards;

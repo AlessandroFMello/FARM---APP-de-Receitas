@@ -10,7 +10,7 @@ function Drinks() {
   return (
     <div>
       <Header pageName={ pageName } />
-      <RecipesCards />
+      <RecipesCards recipeType="drinks" />
       <Footer />
     </div>
   );
