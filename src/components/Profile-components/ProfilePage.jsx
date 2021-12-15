@@ -5,13 +5,15 @@ import Button from 'react-bootstrap/Button';
 function ProfilePage() {
   function recoverFromLocalStorage() {
     const emailLocalStorage = JSON.parse(localStorage.getItem('user'));
-    return emailLocalStorage.email;
+    if (emailLocalStorage !== null) {
+      return emailLocalStorage.email;
+    }
   }
 
   return (
     <div className="profile-page-container">
       <div data-testid="profile-email">
-        {localStorage.getItem('user') > 0 && recoverFromLocalStorage()}
+        {recoverFromLocalStorage()}
       </div>
       <Link to="/receitas-feitas">
         <Button
