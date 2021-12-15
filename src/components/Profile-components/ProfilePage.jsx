@@ -11,7 +11,7 @@ function ProfilePage() {
   return (
     <div className="profile-page-container">
       <div data-testid="profile-email">
-        {recoverFromLocalStorage()}
+        {localStorage.getItem('user') > 0 && recoverFromLocalStorage()}
       </div>
       <Link to="/receitas-feitas">
         <Button
