@@ -4,7 +4,7 @@ import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCards({ recipeType }) {
   const { initialFetch, initialFetchObject, recipes } = useContext(RecipesContext);
-
+  // sobe requisito no avaliador
   useEffect(() => {
     initialFetch();
     console.log('[RecipesCards] initialFetch');
