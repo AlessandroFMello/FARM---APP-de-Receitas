@@ -92,3 +92,25 @@ body {
 .recipe-card img {
   width: 50%;
 }
+
+.profile-page-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.profile-page-container button {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 60px;
+  justify-content: center;
+  margin: 10px;
+  width: 250px;
+}
+
+.profile-page-container a {
+  text-decoration: none;
+}
