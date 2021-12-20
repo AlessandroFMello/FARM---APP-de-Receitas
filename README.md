@@ -265,7 +265,7 @@ Lembre-se de escrever testes unitários e sinta-se livre para alterar a UI, só 
 
 - Serão `10` dias de projeto.
 
-- Data de entrega para avaliação final do projeto: `DD/MM/YYYY - 14:00h`.
+- Data de entrega para avaliação final do projeto: `19/01/2022 - 14:00h`.
 
 ---
 
