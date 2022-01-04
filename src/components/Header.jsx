@@ -18,13 +18,13 @@ function Header(props) {
     setMealOrDrink(toggleApi[pageName]);
   }, [pageName, setMealOrDrink]);
 
-  const displaySearchBar = () => {
+  function displaySearchBar() {
     if (isClicked) {
       setIsClicked(false);
     } else {
       setIsClicked(true);
     }
-  };
+  }
 
   return (
     <div className="header-container">
