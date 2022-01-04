@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import fetchAPI from '../../services/fetchAPI';
+import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCategories({ recipeType }) {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  // const [filterName, setFilterName] = useState('');
+
+  const { setRecipes } = useContext(RecipesContext);
 
   useEffect(() => {
     const getEndpoint = () => {
@@ -28,6 +31,28 @@ function RecipesCategories({ recipeType }) {
     getCategories();
   }, [recipeType]);
 
+  function getCategoryUrl(category) {
+    if (recipeType === 'meals') {
+      return `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+    }
+    if (recipeType === 'drinks') {
+      return `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
+    }
+  }
+
+  async function getItemsByCategory({ target }) {
+    const valueTypeFilter = target.value;
+
+    const MAX_CARDS = 12;
+    const URL = getCategoryUrl(valueTypeFilter);
+    console.log(URL);
+
+    const recipesCategory = await fetchAPI(URL);
+
+    const recipesToRender = recipesCategory[recipeType].slice(0, MAX_CARDS);
+    setRecipes(recipesToRender);
+  }
+
   return (
     <section>
       {categories.map((category) => (
@@ -37,8 +62,8 @@ function RecipesCategories({ recipeType }) {
             name="categories"
             data-testid={ `${category}-category-filter` }
             id={ category }
-            value={ category === selectedCategory }
-            onChange={ () => setSelectedCategory(category) }
+            onClick={ getItemsByCategory }
+            value={ category }
           >
             {category}
           </button>
