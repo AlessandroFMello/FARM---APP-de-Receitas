@@ -8,7 +8,6 @@ import SearchBtn from './header-components/SearchBtn';
 function Header(props) {
   const [isClicked, setIsClicked] = useState(false);
   const { setMealOrDrink } = useContext(RecipesContext);
-
   const { pageName } = props;
 
   useEffect(() => {
