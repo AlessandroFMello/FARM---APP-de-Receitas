@@ -32,15 +32,16 @@ function RecipesCategories({ recipeType }) {
     <section>
       {categories.map((category) => (
         <label key={ category } htmlFor={ category }>
-          <input
-            type="radio"
+          <button
+            type="button"
             name="categories"
             data-testid={ `${category}-category-filter` }
             id={ category }
             value={ category === selectedCategory }
             onChange={ () => setSelectedCategory(category) }
-          />
-          {category}
+          >
+            {category}
+          </button>
         </label>
       ))}
     </section>
