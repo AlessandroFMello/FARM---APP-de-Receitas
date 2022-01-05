@@ -5,7 +5,7 @@ import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCategories({ recipeType }) {
   const [categories, setCategories] = useState([]);
-  // const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState('');
 
   const { setRecipes } = useContext(RecipesContext);
 
@@ -40,6 +40,15 @@ function RecipesCategories({ recipeType }) {
     }
   }
 
+  function toggleFilter(target) {
+    if (filterName === target.value) {
+      setFilterName('');
+      setRecipes({});
+    } else {
+      setFilterName(target.value);
+    }
+  }
+
   async function getItemsByCategory({ target }) {
     const valueTypeFilter = target.value;
 
@@ -51,6 +60,7 @@ function RecipesCategories({ recipeType }) {
 
     const recipesToRender = recipesCategory[recipeType].slice(0, MAX_CARDS);
     setRecipes(recipesToRender);
+    toggleFilter(target);
   }
 
   return (
