@@ -11,10 +11,8 @@ function SearchBtn(props) {
         data-testid="search-top-btn"
         type="button"
         onClick={ displaySearchBar }
-        // src={ searchIcon }
-        // alt="searchIcon"
       >
-        { searchIcon ? <img src={ searchIcon } alt="searchIcon" /> : 'search'}
+        <img src={ searchIcon } alt="searchIcon" />
       </button>
     </div>
   );
