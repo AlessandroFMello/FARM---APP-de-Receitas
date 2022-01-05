@@ -31,13 +31,11 @@ function RecipesCards({ recipeType }) {
 
       let recipesToRender;
 
-      if (Object.keys(recipes).length > 0) 
-      {
+      if (Object.keys(recipes).length > 0) {
         recipesToRender = recipes[recipeType] || recipes;
       } else if (initialFetchObject[recipeType]) {
         recipesToRender = initialFetchObject[recipeType];
       }
-      console.log(recipesToRender)
       recipesToRender = recipesToRender.slice(0, MAX_CARDS);
 
       return (
