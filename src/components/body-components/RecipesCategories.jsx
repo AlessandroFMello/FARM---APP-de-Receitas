@@ -54,7 +54,6 @@ function RecipesCategories({ recipeType }) {
 
     const MAX_CARDS = 12;
     const URL = getCategoryUrl(valueTypeFilter);
-    console.log(URL);
 
     const recipesCategory = await fetchAPI(URL);
 
@@ -65,6 +64,16 @@ function RecipesCategories({ recipeType }) {
 
   return (
     <section>
+      <button
+        type="button"
+        name="all"
+        data-testid="All-category-filter"
+        id="all"
+        onClick={ () => { setRecipes({}); } }
+        value="all"
+      >
+        All
+      </button>
       {categories.map((category) => (
         <label key={ category } htmlFor={ category }>
           <button
