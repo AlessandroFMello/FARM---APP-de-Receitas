@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import fetchAPI from '../services/fetchAPI';
 
@@ -10,33 +10,55 @@ function RecipeDetails() {
 
   const [recipe, setRecipe] = useState({});
 
-  async function getRecipe() {
-    const recipeId = params.id;
+  useEffect(() => {
+    async function getRecipe() {
+      const recipeId = params.id;
 
-    if (history.location.pathname.includes('bebidas')) {
-      const fetchRecipe = await fetchAPI(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
-      const {
-        strDrinkThumb,
-        strDrink,
-      } = fetchRecipe.drinks[0];
-      return setRecipe({
-        ...fetchRecipe.drinks[0],
-        image: strDrinkThumb,
-        title: strDrink,
-      });
+      if (history.location.pathname.includes('bebidas')) {
+        const fetchRecipe = await fetchAPI(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+        const {
+          strDrinkThumb,
+          strDrink,
+        } = fetchRecipe.drinks[0];
+        return setRecipe({
+          ...fetchRecipe.drinks[0],
+          image: strDrinkThumb,
+          title: strDrink,
+          type: 'bebidas',
+        });
+      }
+      if (history.location.pathname.includes('comidas')) {
+        const fetchRecipe = await fetchAPI(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+        const {
+          strMealThumb,
+          strMeal,
+        } = fetchRecipe.meals[0];
+        return setRecipe({
+          ...fetchRecipe.meals[0],
+          image: strMealThumb,
+          title: strMeal,
+          type: 'comidas',
+        });
+      }
     }
-    if (history.location.pathname.includes('comidas')) {
-      const fetchRecipe = await fetchAPI(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
-      const {
-        strMealThumb,
-        strMeal,
-      } = fetchRecipe.meals[0];
-      return setRecipe({
-        ...fetchRecipe.meals[0],
-        image: strMealThumb,
-        title: strMeal,
-      });
+
+    getRecipe();
+    console.log('tudo certo');
+  }, [history, params]);
+
+  function getYoutubeUrl() {
+    const baseUrl = 'https://www.youtube.com/embed/';
+    const videoId = recipe.strYoutube.split('=')[1];
+
+    return `${baseUrl}${videoId}`;
+  }
+
+  function getCategory() {
+    if (recipe.type === 'comidas') {
+      return recipe.strCategory;
     }
+
+    return recipe.strAlcoholic;
   }
 
   function renderRecipe() {
@@ -66,7 +88,7 @@ function RecipeDetails() {
         <p
           data-testid="recipe-category"
         >
-          Texto da categoria
+          {getCategory()}
         </p>
         <p
           data-testid={ `${index}-ingredient-name-and-measure` }
@@ -78,11 +100,20 @@ function RecipeDetails() {
         >
           Instruções
         </p>
-        <p
-          data-testid="video"
-        >
-          Video
-        </p>
+        { recipe.type === 'comidas'
+          && (
+            <div>
+              <iframe
+                data-testid="video"
+                width="560"
+                height="315"
+                src={ getYoutubeUrl() }
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope"
+              />
+            </div>
+          ) }
         <p
           data-testid={ `${index}-recomendation-card` }
         >
@@ -100,7 +131,6 @@ function RecipeDetails() {
 
   return (
     <div>
-      {loading ? getRecipe()}
       {renderRecipe()}
     </div>
   );
