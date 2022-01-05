@@ -8,7 +8,6 @@ import SearchBtn from './header-components/SearchBtn';
 function Header(props) {
   const [isClicked, setIsClicked] = useState(false);
   const { setMealOrDrink } = useContext(RecipesContext);
-
   const { pageName } = props;
 
   useEffect(() => {
@@ -19,13 +18,13 @@ function Header(props) {
     setMealOrDrink(toggleApi[pageName]);
   }, [pageName, setMealOrDrink]);
 
-  function displaySearchBar() {
+  const displaySearchBar = () => {
     if (isClicked) {
       setIsClicked(false);
     } else {
       setIsClicked(true);
     }
-  }
+  };
 
   return (
     <div className="header-container">
