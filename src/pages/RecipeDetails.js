@@ -3,11 +3,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import fetchAPI from '../services/fetchAPI';
 
 function RecipeDetails() {
-  const index = 0;
   const history = useHistory();
   const params = useParams();
 
   const [recipe, setRecipe] = useState({});
+  const [recomendations, setRecomendations] = useState({});
 
   useEffect(() => {
     async function getRecipe() {
@@ -52,12 +52,31 @@ function RecipeDetails() {
     return `${baseUrl}${videoId}`;
   }
 
-  function getCategory() {
-    if (recipe.type === 'comidas') {
-      return recipe.strCategory;
+  useEffect(() => {
+    if (recipe.type) {
+      const getRecommendations = async () => {
+        let URL;
+        if (recipe.type === 'comidas') {
+          URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+        }
+        if (recipe.type === 'bebidas') {
+          URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+        }
+        const response = await fetchAPI(URL);
+        setRecomendations(response);
+      };
+
+      getRecommendations();
+      console.log('[RecipeDetails] Fetch das recommendations');
+    }
+  }, [recipe]);
+
+  function getCategory(item) {
+    if (item.type === 'comidas') {
+      return item.strCategory;
     }
 
-    return recipe.strAlcoholic;
+    return item.strAlcoholic;
   }
 
   function getIngredient() {
@@ -76,9 +95,65 @@ function RecipeDetails() {
     return ingredientsArr;
   }
 
+  function getRecommendationsValue() {
+    const maxValue = 6;
+    const recommendationsValue = Object
+      .values(recomendations)[0] || [];
+    const slicedRecommendations = recommendationsValue.slice(0, maxValue);
+
+    return slicedRecommendations.map((element) => {
+      if (recipe.type === 'comidas') {
+        const {
+          strDrinkThumb,
+          strDrink,
+        } = element;
+        return {
+          ...element,
+          image: strDrinkThumb,
+          title: strDrink,
+          type: 'bebidas',
+        };
+      }
+      const {
+        strMealThumb,
+        strMeal,
+      } = element;
+      return {
+        ...element,
+        image: strMealThumb,
+        title: strMeal,
+        type: 'comidas',
+      };
+    });
+  }
+
+  function renderRecommendations() {
+    const slicedRecommendations = getRecommendationsValue();
+    return (
+      slicedRecommendations.map((recomendation, index) => (
+        <div
+          hidden={ index >= 2 }
+          key={ `${recomendation}.${index}` }
+          data-testid={ `${index}-recomendation-card` }
+        >
+          <img
+            src={ recomendation.image }
+            alt={ recomendation.title }
+          />
+          <p>{getCategory(recomendation)}</p>
+          <h2
+            data-testid={ `${index}-recomendation-title` }
+          >
+            { recomendation.title }
+
+          </h2>
+        </div>
+      ))
+    );
+  }
+
   function renderRecipe() {
     const ingredients = getIngredient();
-    console.log(ingredients);
 
     return (
       <div>
@@ -106,7 +181,7 @@ function RecipeDetails() {
         <p
           data-testid="recipe-category"
         >
-          {getCategory()}
+          {getCategory(recipe)}
         </p>
         <ul>
           {
@@ -142,12 +217,12 @@ function RecipeDetails() {
               />
             </div>
           ) }
-        <p
-          data-testid={ `${index}-recomendation-card` }
-        >
-          Receitas recomendadas
-        </p>
+        <div>
+          <h1>Recomendadas</h1>
+          {renderRecommendations()}
+        </div>
         <button
+          className="start-recipe"
           data-testid="start-recipe-btn"
           type="button"
         >
