@@ -5,6 +5,13 @@ function RecipeInProgress() {
   return (
     <div>
       <RecipeCard />
+      <button
+        data-testid="finish-recipe-btn"
+        type="button"
+      >
+        Finalizar Receita
+
+      </button>
     </div>
   );
 }
