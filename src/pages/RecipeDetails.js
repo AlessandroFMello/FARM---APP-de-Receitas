@@ -65,7 +65,7 @@ function RecipeDetails() {
     const ingredientsArr = [];
 
     for (let i = 1; i < max; i += 1) {
-      if (recipe[`strIngredient${i}`] !== '') {
+      if (recipe[`strIngredient${i}`]) {
         ingredientsArr.push({
           ingredient: recipe[`strIngredient${i}`],
           measure: recipe[`strMeasure${i}`],
@@ -77,8 +77,8 @@ function RecipeDetails() {
   }
 
   function renderRecipe() {
-    console.log(recipe);
     const ingredients = getIngredient();
+    console.log(ingredients);
 
     return (
       <div>
@@ -115,8 +115,8 @@ function RecipeDetails() {
                 key={ `${ingredient}.${i}` }
                 data-testid={ `${i}-ingredient-name-and-measure` }
               >
-                { `${ingredient} - ${measure}` }
-
+                { `${ingredient} ` }
+                { measure && `- ${measure}` }
               </li>
             ))
           }
