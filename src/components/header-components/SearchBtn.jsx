@@ -8,11 +8,11 @@ function SearchBtn(props) {
   return (
     <div>
       <input
+        alt="searchIcon"
         data-testid="search-top-btn"
-        type="image"
         onClick={ displaySearchBar }
         src={ searchIcon }
-        alt="searchIcon"
+        type="image"
       />
     </div>
   );

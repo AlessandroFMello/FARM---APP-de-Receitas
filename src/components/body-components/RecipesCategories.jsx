@@ -5,7 +5,7 @@ import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCategories({ recipeType }) {
   const [categories, setCategories] = useState([]);
-  // const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState('');
 
   const { setRecipes } = useContext(RecipesContext);
 
@@ -40,21 +40,40 @@ function RecipesCategories({ recipeType }) {
     }
   }
 
+  function toggleFilter(target) {
+    if (filterName === target.value) {
+      setFilterName('');
+      setRecipes({});
+    } else {
+      setFilterName(target.value);
+    }
+  }
+
   async function getItemsByCategory({ target }) {
     const valueTypeFilter = target.value;
 
     const MAX_CARDS = 12;
     const URL = getCategoryUrl(valueTypeFilter);
-    console.log(URL);
 
     const recipesCategory = await fetchAPI(URL);
 
     const recipesToRender = recipesCategory[recipeType].slice(0, MAX_CARDS);
     setRecipes(recipesToRender);
+    toggleFilter(target);
   }
 
   return (
     <section>
+      <button
+        type="button"
+        name="all"
+        data-testid="All-category-filter"
+        id="all"
+        onClick={ () => { setRecipes({}); } }
+        value="all"
+      >
+        All
+      </button>
       {categories.map((category) => (
         <label key={ category } htmlFor={ category }>
           <button

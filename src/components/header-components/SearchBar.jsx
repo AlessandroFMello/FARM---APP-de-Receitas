@@ -27,7 +27,6 @@ function SearchBar() {
   async function fecthByUrl() {
     const urlToFetch = getUrlByEndpoint();
     const response = await fetchAPI(urlToFetch);
-    console.log('Resposta do fetch', response);
 
     return response;
   }
