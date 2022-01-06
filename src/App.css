@@ -115,3 +115,10 @@ body {
 .profile-page-container a {
   text-decoration: none;
 }
+
+.start-recipe {
+  bottom: 0;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+}
