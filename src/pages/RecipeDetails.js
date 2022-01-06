@@ -3,8 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import fetchAPI from '../services/fetchAPI';
 
 function RecipeDetails() {
-  const index = 'qualquer coisa';
-
+  const index = 0;
   const history = useHistory();
   const params = useParams();
 
@@ -61,7 +60,26 @@ function RecipeDetails() {
     return recipe.strAlcoholic;
   }
 
+  function getIngredient() {
+    const max = 20;
+    const ingredientsArr = [];
+
+    for (let i = 1; i < max; i += 1) {
+      if (recipe[`strIngredient${i}`] !== '') {
+        ingredientsArr.push({
+          ingredient: recipe[`strIngredient${i}`],
+          measure: recipe[`strMeasure${i}`],
+        });
+      }
+    }
+
+    return ingredientsArr;
+  }
+
   function renderRecipe() {
+    console.log(recipe);
+    const ingredients = getIngredient();
+
     return (
       <div>
         <h1>Detalhes da Receita</h1>
@@ -90,15 +108,25 @@ function RecipeDetails() {
         >
           {getCategory()}
         </p>
-        <p
-          data-testid={ `${index}-ingredient-name-and-measure` }
-        >
-          Ingredientes
-        </p>
+        <ul>
+          {
+            ingredients.map(({ ingredient, measure }, i) => (
+              <li
+                key={ `${ingredient}.${i}` }
+                data-testid={ `${i}-ingredient-name-and-measure` }
+              >
+                { `${ingredient} - ${measure}` }
+
+              </li>
+            ))
+          }
+        </ul>
         <p
           data-testid="instructions"
         >
-          Instruções
+          {
+            recipe.strInstructions
+          }
         </p>
         { recipe.type === 'comidas'
           && (
