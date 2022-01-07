@@ -153,3 +153,20 @@ body {
   margin-top: 5px;
   width: 100px;
 }
+
+.ingredient-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.imageDetails {
+  height: 100px;
+  width: 100vw;
+}
+
+.ingredients-container {
+  padding-left: 15px;
+}

@@ -1,10 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 
 function IngredientsList() {
-  const { recipe } = useContext(RecipesContext);
+  const {
+    recipe,
+    setDoneRecipe,
+    verifyIfAllIngredientsChecked,
+  } = useContext(RecipesContext);
   const { pathname } = useLocation();
+  const [ingredientsLength, setIngredientsLength] = useState(0);
+  const [checkedIngredients, setCheckedIngredients] = useState(0);
+
+  useEffect(() => {
+    verifyIfAllIngredientsChecked(ingredientsLength, checkedIngredients);
+  }, [
+    verifyIfAllIngredientsChecked,
+    checkedIngredients,
+    ingredientsLength,
+    setDoneRecipe,
+  ]);
 
   function getIngredient() {
     const max = 20;
@@ -40,15 +55,34 @@ function IngredientsList() {
     );
   }
 
+  function lineThroughIngredient({ target }) {
+    setIngredientsLength(ingredients.length);
+    const father = target.parentElement;
+    if (target.checked) {
+      father.style.textDecoration = 'line-through';
+      setCheckedIngredients((prev) => prev + 1);
+    } else if (!target.checked) {
+      father.style.textDecoration = 'none';
+      setCheckedIngredients((prev) => prev - 1);
+    }
+  }
+
   function getIngredientCheck() {
     return (
-      <div>
+      <div
+        className="ingredients-container"
+      >
         {ingredients.map(({ ingredient, measure }, index) => (
-          <label key={ `${ingredient}.${index}` } htmlFor={ `${ingredient}.${index}` }>
+          <label
+            className="ingredient-item"
+            key={ `${ingredient}.${index}` }
+            htmlFor={ `${ingredient}.${index}` }
+            data-testid={ `${index}-ingredient-step` }
+          >
             <input
               type="checkbox"
               id={ `${ingredient}.${index}` }
-              data-testid={ `${index}-ingredient-step` }
+              onClick={ (e) => lineThroughIngredient(e) }
             />
             {`${ingredient} `}
             {measure && `- ${measure}`}

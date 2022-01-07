@@ -11,6 +11,7 @@ function RecipesProvider({ children }) {
     drinks: [],
   });
   const [recipe, setRecipe] = useState({});
+  const [doneRecipe, setDoneRecipe] = useState(true);
 
   // useCallback(parâmetro1, parâmetro2)
   // parâmetro1: função a ser retornada
@@ -62,6 +63,14 @@ function RecipesProvider({ children }) {
     [],
   );
 
+  function verifyIfAllIngredientsChecked(ingredientsLength, checkedIngredients) {
+    if (ingredientsLength !== 0 && ingredientsLength === checkedIngredients) {
+      setDoneRecipe(false);
+    } else if (ingredientsLength !== checkedIngredients) {
+      setDoneRecipe(true);
+    }
+  }
+
   const context = {
     recipes,
     setRecipes,
@@ -72,6 +81,9 @@ function RecipesProvider({ children }) {
     setMealOrDrink,
     initialFetchObject,
     initialFetch,
+    doneRecipe,
+    setDoneRecipe,
+    verifyIfAllIngredientsChecked,
   };
 
   return (
