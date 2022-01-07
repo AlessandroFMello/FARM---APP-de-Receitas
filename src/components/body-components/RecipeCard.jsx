@@ -1,9 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import useClippy from 'use-clippy';
 import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
+import shareIcon from '../../images/shareIcon.svg';
+import favoriteIcon from '../../images/whiteHeartIcon.svg';
 
 function RecipeCard() {
+  const [clipboard, setClipboard] = useClippy();
   const { recipe, getRecipe } = useContext(RecipesContext);
   const { pathname } = useLocation();
   const params = useParams();
@@ -21,6 +25,11 @@ function RecipeCard() {
     return item.strAlcoholic;
   }
 
+  function getClipboard() {
+    const href = window.location.href;
+    setClipboard(href);
+  }
+
   return (
     <div>
       <img
@@ -31,18 +40,23 @@ function RecipeCard() {
       />
       <div>
         <h2 data-testid="recipe-title">{ recipe.title }</h2>
-        <button
-          type="button"
+        <input
           data-testid="share-btn"
-        >
-          Compartilhar
-        </button>
-        <button
-          type="button"
+          onClick={ getClipboard }
+          style={ { marginLeft: '20px' } }
+          src={ shareIcon }
+          type="image"
+        />
+        {
+          clipboard && (
+            <p>Link copiado!</p>
+          )
+        }
+        <input
           data-testid="favorite-btn"
-        >
-          Favoritar
-        </button>
+          src={ favoriteIcon }
+          type="image"
+        />
       </div>
       <p
         data-testid="recipe-category"
