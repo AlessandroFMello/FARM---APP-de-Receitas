@@ -24,6 +24,7 @@ function RecipeCard() {
   return (
     <div>
       <img
+        className="imageDetails"
         src={ recipe.image }
         alt={ recipe.title }
         data-testid="recipe-photo"
@@ -50,10 +51,10 @@ function RecipeCard() {
       </p>
       <h1>Ingredients</h1>
       <IngredientsList />
+      <h1>Instructions</h1>
       <p
         data-testid="instructions"
       >
-        <h1>Instructions</h1>
         {
           recipe.strInstructions
         }
