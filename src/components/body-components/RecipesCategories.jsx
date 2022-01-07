@@ -63,8 +63,9 @@ function RecipesCategories({ recipeType }) {
   }
 
   return (
-    <section>
+    <section className="category-container">
       <button
+        className="button-category"
         type="button"
         name="all"
         data-testid="All-category-filter"
@@ -75,18 +76,18 @@ function RecipesCategories({ recipeType }) {
         All
       </button>
       {categories.map((category) => (
-        <label key={ category } htmlFor={ category }>
-          <button
-            type="button"
-            name="categories"
-            data-testid={ `${category}-category-filter` }
-            id={ category }
-            onClick={ getItemsByCategory }
-            value={ category }
-          >
-            {category}
-          </button>
-        </label>
+        <button
+          key={ category }
+          className="button-category"
+          type="button"
+          name="categories"
+          data-testid={ `${category}-category-filter` }
+          id={ category }
+          onClick={ getItemsByCategory }
+          value={ category }
+        >
+          {category}
+        </button>
       ))}
     </section>
   );
