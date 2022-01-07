@@ -48,9 +48,7 @@ function RecipeCard() {
       >
         {getCategory(recipe)}
       </p>
-      <h1>Ingredients</h1>
       <IngredientsList />
-      <h1>Instructions</h1>
       <p
         data-testid="instructions"
       >

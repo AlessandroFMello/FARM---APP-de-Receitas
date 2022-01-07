@@ -40,31 +40,15 @@ function IngredientsList() {
     );
   }
 
-  function lineThroughIngredient({ target }) {
-    const father = target.parentElement;
-    if (target.checked) {
-      father.style.textDecoration = 'line-through';
-    }
-    if (!target.checked) {
-      father.style.textDecoration = 'none';
-    }
-  }
-
   function getIngredientCheck() {
     return (
-      <div
-        className="ingredients"
-      >
+      <div>
         {ingredients.map(({ ingredient, measure }, index) => (
-          <label
-            key={ `${ingredient}.${index}` }
-            htmlFor={ `${ingredient}.${index}` }
-            data-testid={ `${index}-ingredient-step` }
-          >
+          <label key={ `${ingredient}.${index}` } htmlFor={ `${ingredient}.${index}` }>
             <input
               type="checkbox"
               id={ `${ingredient}.${index}` }
-              onClick={ (e) => lineThroughIngredient(e) }
+              data-testid={ `${index}-ingredient-step` }
             />
             {`${ingredient} `}
             {measure && `- ${measure}`}
