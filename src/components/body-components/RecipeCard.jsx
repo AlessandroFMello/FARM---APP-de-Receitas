@@ -26,7 +26,7 @@ function RecipeCard() {
   }
 
   function getClipboard() {
-    const href = window.location.href;
+    const { href } = window.location;
     setClipboard(href);
   }
 
@@ -41,6 +41,7 @@ function RecipeCard() {
       <div>
         <h2 data-testid="recipe-title">{ recipe.title }</h2>
         <input
+          alt="Compartilhar"
           data-testid="share-btn"
           onClick={ getClipboard }
           style={ { marginLeft: '20px' } }
@@ -53,6 +54,7 @@ function RecipeCard() {
           )
         }
         <input
+          alt="Favoritar"
           data-testid="favorite-btn"
           src={ favoriteIcon }
           type="image"
