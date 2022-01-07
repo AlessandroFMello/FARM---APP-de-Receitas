@@ -87,6 +87,7 @@ function RecipeDetails() {
           data-testid={ `${index}-recomendation-card` }
         >
           <img
+            style={ { width: '100vw', height: '100px' } }
             src={ recomendation.image }
             alt={ recomendation.title }
           />
@@ -104,7 +105,7 @@ function RecipeDetails() {
 
   function renderRecipe() {
     return (
-      <div>
+      <div style={ { display: 'flex', flexDirection: 'column', alignItems: 'center' } }>
         <h1>Detalhes da Receita</h1>
         <RecipeCard />
         { recipe.type === 'comidas'
@@ -112,8 +113,8 @@ function RecipeDetails() {
             <div>
               <iframe
                 data-testid="video"
-                width="560"
-                height="315"
+                width="100vw"
+                height="auto"
                 src={ getYoutubeUrl() }
                 title="YouTube video player"
                 frameBorder="0"
