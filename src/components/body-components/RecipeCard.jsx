@@ -48,10 +48,12 @@ function RecipeCard() {
       >
         {getCategory(recipe)}
       </p>
+      <h1>Ingredients</h1>
       <IngredientsList />
       <p
         data-testid="instructions"
       >
+        <h1>Instructions</h1>
         {
           recipe.strInstructions
         }
