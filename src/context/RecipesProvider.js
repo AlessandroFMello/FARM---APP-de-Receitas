@@ -31,6 +31,63 @@ function RecipesProvider({ children }) {
     [],
   );
 
+  const getLocalStorageFirstTime = useCallback(
+    (pathname, id, setCheck) => {
+      const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      if (inProgressRecipes === null) {
+        const first = {
+          cocktails: {},
+          meals: {},
+        };
+        return localStorage.setItem('inProgressRecipes', JSON.stringify(first));
+      }
+      const recipeTypes = {
+        comidas: 'meals',
+        bebidas: 'cocktails',
+      };
+      const verifyType = pathname.match('bebidas') || pathname.match('comidas');
+      const type = verifyType[0];
+      const arrayOfIngredients = inProgressRecipes[recipeTypes[type]][id];
+      if (arrayOfIngredients) {
+        setCheck([...arrayOfIngredients]);
+      }
+    },
+    [],
+  );
+
+  const paintCheckedElements = useCallback(
+    (checkeds) => {
+      if (checkeds.length > 0) {
+        const elements = document.getElementsByClassName('teste');
+        checkeds.forEach((el) => {
+          if (elements.namedItem(el)) {
+            const father = elements.namedItem(el).parentElement;
+            father.style.textDecoration = 'line-through';
+          }
+        });
+      }
+    },
+    [],
+  );
+
+  const getIngredient = useCallback(
+    (myRecipe, setIngredientlLength) => {
+      const max = 20;
+      const ingredientsArr = [];
+
+      for (let i = 1; i < max; i += 1) {
+        if (myRecipe[`strIngredient${i}`]) {
+          ingredientsArr.push({
+            ingredient: myRecipe[`strIngredient${i}`],
+            measure: myRecipe[`strMeasure${i}`],
+          });
+        }
+      }
+      setIngredientlLength(ingredientsArr);
+    },
+    [],
+  );
+
   const getRecipe = useCallback(
     async (pathname, recipeId) => {
       if (pathname.includes('bebidas')) {
@@ -84,6 +141,9 @@ function RecipesProvider({ children }) {
     doneRecipe,
     setDoneRecipe,
     verifyIfAllIngredientsChecked,
+    getLocalStorageFirstTime,
+    paintCheckedElements,
+    getIngredient,
   };
 
   return (
