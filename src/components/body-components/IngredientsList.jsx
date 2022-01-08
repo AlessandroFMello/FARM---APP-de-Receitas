@@ -7,62 +7,42 @@ function IngredientsList() {
     recipe,
     setDoneRecipe,
     verifyIfAllIngredientsChecked,
+    getLocalStorageFirstTime,
+    paintCheckedElements,
+    getIngredient,
   } = useContext(RecipesContext);
   const { pathname } = useLocation();
   const [check, setCheck] = useState([]);
-  const [ingredientsLength, setIngredientsLength] = useState(0);
-  const [checkedIngredients, setCheckedIngredients] = useState(0);
+  const [ingredients, setIngredients] = useState([]);
   const params = useParams();
 
-  function getIngredient() {
-    const max = 20;
-    const ingredientsArr = [];
-
-    for (let i = 1; i < max; i += 1) {
-      if (recipe[`strIngredient${i}`]) {
-        ingredientsArr.push({
-          ingredient: recipe[`strIngredient${i}`],
-          measure: recipe[`strMeasure${i}`],
-        });
-      }
-    }
-    console.log(pathname);
-    return ingredientsArr;
-  }
-
   useEffect(() => {
-    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    const length = getIngredient();
-    if (inProgressRecipes === null) {
-      const first = {
-        cocktails: {},
-        meals: {}
-      }
-      return localStorage.setItem('inProgressRecipes', JSON.stringify(first))
-    }
-    const mealOrDrink = {
-      comidas: 'meals',
-      bebidas: 'cocktails'
-    }
-    const verifyType = pathname.match('bebidas') || pathname.match('comidas');
-    const { id } = params;
-    const type = verifyType[0];
-    const arrayOfIngredients = inProgressRecipes[mealOrDrink[type]][id];
-    if(arrayOfIngredients) {
-      setCheck([...arrayOfIngredients]);
-    }
-  }, []);
-
-  useEffect(() => {
-    verifyIfAllIngredientsChecked(ingredientsLength, checkedIngredients);
+    getLocalStorageFirstTime(pathname, params.id, setCheck);
   }, [
-    verifyIfAllIngredientsChecked,
-    checkedIngredients,
-    ingredientsLength,
-    setDoneRecipe,
+    getLocalStorageFirstTime,
+    pathname,
+    params,
+    setCheck,
   ]);
 
-  const ingredients = getIngredient();
+  useEffect(() => {
+    paintCheckedElements(check);
+  });
+
+  useEffect(() => {
+    if (Object.keys(recipe).length > 0) {
+      getIngredient(recipe, setIngredients);
+    }
+  }, [getIngredient, recipe, setIngredients]);
+
+  useEffect(() => {
+    verifyIfAllIngredientsChecked(ingredients.length, check.length);
+  }, [
+    verifyIfAllIngredientsChecked,
+    ingredients,
+    check,
+    setDoneRecipe,
+  ]);
 
   function getIngredientList() {
     return (
@@ -81,69 +61,58 @@ function IngredientsList() {
   }
 
   function lineThroughIngredient({ target }) {
-    const name = target.name;
+    const { name } = target;
     const father = target.parentElement;
+    const wichAPI = {
+      comidas: 'meals',
+      bebidas: 'cocktails',
+    };
+    const { type } = recipe;
+    const { id } = params;
+    let newLocalStorage = {};
     if (target.checked) {
       father.style.textDecoration = 'line-through';
-      setCheck((prev) => [...prev, name])
-      console.log(check.length)
-      setCheckedIngredients((prev) => prev + 1);
-      const obj = {
-        comidas: 'meals',
-        bebidas: 'cocktails'
-      }
-      const { type } = recipe;
-      const id = params.id;
-      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'))
-      let obj2 = {};
-      if (inprogress[obj[type]][id]) {
-        const prev = [...inprogress[obj[type]][id]];
-        obj2 = {
+      setCheck((prev) => [...prev, name]);
+      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      if (inprogress[wichAPI[type]][id]) {
+        const prev = [...inprogress[wichAPI[type]][id]];
+        newLocalStorage = {
           ...inprogress,
-          [obj[type]]: {
-            ...inprogress[obj[type]],
-            [id]: [...prev, target.name]
-          }
-        }
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: [...prev, target.name],
+          },
+        };
       } else {
-        obj2 = {
+        newLocalStorage = {
           ...inprogress,
-          [obj[type]]: {
-            ...inprogress[obj[type]],
-            [id]: [target.name]
-          }
-        }
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: [target.name],
+          },
+        };
       }
-      localStorage.setItem('inProgressRecipes', JSON.stringify(obj2))
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
     } else if (!target.checked) {
-      console.log(check.length)
       father.style.textDecoration = 'none';
       const filtered = check.filter((el) => el !== name);
-      setCheck(filtered)
-      setCheckedIngredients((prev) => prev + 1);
-      const obj = {
-        comidas: 'meals',
-        bebidas: 'cocktails'
-      }
-      const { type } = recipe;
-      const id = params.id;
-      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'))
-      let obj2 = {};
-      if (inprogress[obj[type]][id]) {
-        const prev = [...inprogress[obj[type]][id]];
-        const filter = prev.filter((el) => el !== name)
-        obj2 = {
+      setCheck(filtered);
+      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      if (inprogress[wichAPI[type]][id]) {
+        const prev = [...inprogress[wichAPI[type]][id]];
+        const filter = prev.filter((el) => el !== name);
+        newLocalStorage = {
           ...inprogress,
-          [obj[type]]: {
-            ...inprogress[obj[type]],
-            [id]: filter
-          }
-        }
-      localStorage.setItem('inProgressRecipes', JSON.stringify(obj2))
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: filter,
+          },
+        };
+        localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
+      }
     }
-  
-  }}
-  
+  }
+
   function getIngredientCheck() {
     return (
       <div
