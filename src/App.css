@@ -170,3 +170,7 @@ body {
 .ingredients-container {
   padding-left: 15px;
 }
+
+.through {
+  text-decoration: line-through;
+}

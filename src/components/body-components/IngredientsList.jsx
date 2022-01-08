@@ -8,7 +8,6 @@ function IngredientsList() {
     setDoneRecipe,
     verifyIfAllIngredientsChecked,
     getLocalStorageFirstTime,
-    paintCheckedElements,
     getIngredient,
   } = useContext(RecipesContext);
   const { pathname } = useLocation();
@@ -24,10 +23,6 @@ function IngredientsList() {
     params,
     setCheck,
   ]);
-
-  useEffect(() => {
-    paintCheckedElements(check);
-  });
 
   useEffect(() => {
     if (Object.keys(recipe).length > 0) {
@@ -53,7 +48,7 @@ function IngredientsList() {
             data-testid={ `${index}-ingredient-name-and-measure` }
           >
             {`${ingredient} `}
-            {measure && `- ${measure}`}
+            {`- ${measure}`}
           </li>
         ))}
       </ul>
@@ -62,7 +57,6 @@ function IngredientsList() {
 
   function lineThroughIngredient({ target }) {
     const { name } = target;
-    const father = target.parentElement;
     const wichAPI = {
       comidas: 'meals',
       bebidas: 'cocktails',
@@ -71,7 +65,6 @@ function IngredientsList() {
     const { id } = params;
     let newLocalStorage = {};
     if (target.checked) {
-      father.style.textDecoration = 'line-through';
       setCheck((prev) => [...prev, name]);
       const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
       if (inprogress[wichAPI[type]][id]) {
@@ -93,8 +86,7 @@ function IngredientsList() {
         };
       }
       localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
-    } else if (!target.checked) {
-      father.style.textDecoration = 'none';
+    } else {
       const filtered = check.filter((el) => el !== name);
       setCheck(filtered);
       const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
@@ -120,7 +112,7 @@ function IngredientsList() {
       >
         {ingredients.map(({ ingredient, measure }, index) => (
           <label
-            className="ingredient-item"
+            className={ `ingredient-item ${check.includes(ingredient) && 'through'}` }
             key={ `${ingredient}.${index}` }
             htmlFor={ `${ingredient}.${index}` }
             data-testid={ `${index}-ingredient-step` }
@@ -134,7 +126,7 @@ function IngredientsList() {
               onClick={ (e) => lineThroughIngredient(e) }
             />
             {`${ingredient} `}
-            {measure && `- ${measure}`}
+            {`- ${measure}`}
           </label>
         ))}
       </div>

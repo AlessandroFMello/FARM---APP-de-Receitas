@@ -55,21 +55,6 @@ function RecipesProvider({ children }) {
     [],
   );
 
-  const paintCheckedElements = useCallback(
-    (checkeds) => {
-      if (checkeds.length > 0) {
-        const elements = document.getElementsByClassName('teste');
-        checkeds.forEach((el) => {
-          if (elements.namedItem(el)) {
-            const father = elements.namedItem(el).parentElement;
-            father.style.textDecoration = 'line-through';
-          }
-        });
-      }
-    },
-    [],
-  );
-
   const getIngredient = useCallback(
     (myRecipe, setIngredientlLength) => {
       const max = 20;
@@ -142,7 +127,6 @@ function RecipesProvider({ children }) {
     setDoneRecipe,
     verifyIfAllIngredientsChecked,
     getLocalStorageFirstTime,
-    paintCheckedElements,
     getIngredient,
   };
 
