@@ -8,9 +8,13 @@ function RecipeDetails() {
   const history = useHistory();
   const params = useParams();
   const { pathname } = useLocation();
-  const { recipe, getLocalStorageFirstTime } = useContext(RecipesContext);
+  const {
+    recipe,
+    getLocalStorageFirstTime,
+    setAlreadyDone,
+    alreadyDone,
+  } = useContext(RecipesContext);
   const [recomendations, setRecomendations] = useState({});
-  const [alreadyDone, setAlreadyDone] = useState(false);
   const [inProgress, setInProgress] = useState(false);
 
   function getYoutubeUrl() {
@@ -44,7 +48,7 @@ function RecipeDetails() {
       bebidas: [recipe.strDrink],
       comidas: [recipe.strMeal],
     };
-    const verifyIfItsNotDone = (!alreadyDone) && doneRecipes.length > 0;
+    const verifyIfItsNotDone = !alreadyDone && doneRecipes.length > 0;
     const iAlreadyHaveRecipe = wichRecipeType[recipe.type];
     if (verifyIfItsNotDone && iAlreadyHaveRecipe) {
       const recipeName = wichRecipeType[recipe.type][0];
@@ -67,9 +71,7 @@ function RecipeDetails() {
         const response = await fetchAPI(URL);
         setRecomendations(response);
       };
-
       getRecommendations();
-      console.log('[RecipeDetails] Fetch das recommendations');
     }
   }, [recipe]);
 
@@ -77,7 +79,6 @@ function RecipeDetails() {
     if (item.type === 'comidas') {
       return item.strCategory;
     }
-
     return item.strAlcoholic;
   }
 
@@ -112,6 +113,7 @@ function RecipeDetails() {
         <button
           className="start-recipe"
           data-testid="start-recipe-btn"
+          style={ { padding: '15px' } }
           type="button"
         >
           {text}
@@ -139,7 +141,6 @@ function RecipeDetails() {
             data-testid={ `${index}-recomendation-title` }
           >
             { recomendation.title }
-
           </h2>
         </div>
       ))

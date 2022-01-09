@@ -55,7 +55,7 @@ function IngredientsList() {
     );
   }
 
-  function lineThroughIngredient({ target }) {
+  function setToLocalStorage({ target }) {
     const { name } = target;
     const wichAPI = {
       comidas: 'meals',
@@ -126,7 +126,7 @@ function IngredientsList() {
               defaultChecked={ check.includes(ingredient) }
               id={ `${ingredient}.${index}` }
               name={ `${ingredient}` }
-              onClick={ (e) => lineThroughIngredient(e) }
+              onClick={ (e) => setToLocalStorage(e) }
             />
             {`${ingredient} `}
             {measure && `- ${measure}`}

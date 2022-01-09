@@ -4,35 +4,55 @@ import { Link } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 
 function RecipesCards({ recipeType }) {
-  const { initialFetch, initialFetchObject, recipes } = useContext(RecipesContext);
+  const {
+    initialFetch,
+    initialFetchObject,
+    recipes,
+    setAlreadyDone,
+    alreadyDone,
+    recipe,
+    setRecipe,
+  } = useContext(RecipesContext);
   // sobe requisito no avaliador
   useEffect(() => {
     initialFetch();
     console.log('[RecipesCards] initialFetch');
   }, [initialFetch]);
 
+  useEffect(() => {
+    if (alreadyDone) {
+      setAlreadyDone(false);
+    }
+  });
+
+  useEffect(() => {
+    if (Object.keys(recipe).length > 0) {
+      setRecipe({});
+    }
+  });
+
   const getRecipeCards = useCallback(
     () => {
-      function getRecipeThumb(recipe) {
+      function getRecipeThumb(paramRecipe) {
         const mealOrDrinkObj = {
-          drinks: recipe.strDrinkThumb,
-          meals: recipe.strMealThumb,
+          drinks: paramRecipe.strDrinkThumb,
+          meals: paramRecipe.strMealThumb,
         };
         return mealOrDrinkObj[recipeType];
       }
 
-      function getRecipeName(recipe) {
+      function getRecipeName(paramRecipe) {
         const mealOrDrinkObj = {
-          drinks: recipe.strDrink,
-          meals: recipe.strMeal,
+          drinks: paramRecipe.strDrink,
+          meals: paramRecipe.strMeal,
         };
         return mealOrDrinkObj[recipeType];
       }
 
-      function getRecipeId(recipe) {
+      function getRecipeId(paramRecipe) {
         const mealOrDrinkObj = {
-          drinks: recipe.idDrink,
-          meals: recipe.idMeal,
+          drinks: paramRecipe.idDrink,
+          meals: paramRecipe.idMeal,
         };
         return mealOrDrinkObj[recipeType];
       }
@@ -54,22 +74,23 @@ function RecipesCards({ recipeType }) {
       recipesToRender = recipesToRender.slice(0, MAX_CARDS);
 
       return (
-        recipesToRender.map((recipe, index) => (
+        recipesToRender.map((actualRecipe, index) => (
           <Link
-            to={ `${changeRecipeType()}/${getRecipeId(recipe)}` }
-            key={ getRecipeId(recipe) }
+            to={ `${changeRecipeType()}/${getRecipeId(actualRecipe)}` }
+            key={ getRecipeId(actualRecipe) }
           >
-
             <div
               className="recipe-card"
               data-testid={ `${index}-recipe-card` }
             >
               <img
-                src={ getRecipeThumb(recipe) }
+                src={ getRecipeThumb(actualRecipe) }
                 data-testid={ `${index}-card-img` }
-                alt={ getRecipeName(recipe) }
+                alt={ getRecipeName(actualRecipe) }
               />
-              <h3 data-testid={ `${index}-card-name` }>{ getRecipeName(recipe) }</h3>
+              <h3 data-testid={ `${index}-card-name` }>
+                { getRecipeName(actualRecipe) }
+              </h3>
             </div>
           </Link>
         ))

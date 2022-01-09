@@ -12,6 +12,7 @@ function RecipesProvider({ children }) {
   });
   const [recipe, setRecipe] = useState({});
   const [doneRecipe, setDoneRecipe] = useState(true);
+  const [alreadyDone, setAlreadyDone] = useState(false);
 
   // useCallback(parâmetro1, parâmetro2)
   // parâmetro1: função a ser retornada
@@ -182,6 +183,8 @@ function RecipesProvider({ children }) {
     getIngredient,
     setDoneRecipeToLocalStorage,
     createDate,
+    alreadyDone,
+    setAlreadyDone,
   };
 
   return (
