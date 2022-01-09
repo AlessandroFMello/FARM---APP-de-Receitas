@@ -48,7 +48,7 @@ function IngredientsList() {
             data-testid={ `${index}-ingredient-name-and-measure` }
           >
             {`${ingredient} `}
-            {`- ${measure}`}
+            {measure && `- ${measure}`}
           </li>
         ))}
       </ul>
@@ -65,7 +65,9 @@ function IngredientsList() {
     const { id } = params;
     let newLocalStorage = {};
     const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (target.checked) {
+    const filtered = check.filter((el) => el !== name);
+    switch (target.checked) {
+    case true:
       setCheck((prev) => [...prev, name]);
       if (inprogress[wichAPI[type]][id]) {
         const prev = [...inprogress[wichAPI[type]][id]];
@@ -86,8 +88,8 @@ function IngredientsList() {
         };
       }
       localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
-    } else {
-      const filtered = check.filter((el) => el !== name);
+      break;
+    case false:
       setCheck(filtered);
       if (inprogress[wichAPI[type]][id]) {
         const prev = [...inprogress[wichAPI[type]][id]];
@@ -101,6 +103,8 @@ function IngredientsList() {
         };
         localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
       }
+      break;
+    default:
     }
   }
 
@@ -125,7 +129,7 @@ function IngredientsList() {
               onClick={ (e) => lineThroughIngredient(e) }
             />
             {`${ingredient} `}
-            {`- ${measure}`}
+            {measure && `- ${measure}`}
           </label>
         ))}
       </div>
