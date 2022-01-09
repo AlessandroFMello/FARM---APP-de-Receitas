@@ -127,17 +127,18 @@ function RecipeDetails() {
     return (
       slicedRecommendations.map((recomendation, index) => (
         <div
-          hidden={ index >= 2 }
+          className="recomendation-card"
           key={ `${recomendation}.${index}` }
           data-testid={ `${index}-recomendation-card` }
         >
           <img
-            style={ { width: '100vw', height: '100px' } }
+            className="img-recomendation"
             src={ recomendation.image }
             alt={ recomendation.title }
           />
           <p>{getCategory(recomendation)}</p>
           <h2
+            className="recomendation-title"
             data-testid={ `${index}-recomendation-title` }
           >
             { recomendation.title }
@@ -149,7 +150,7 @@ function RecipeDetails() {
 
   function renderRecipe() {
     return (
-      <div style={ { display: 'flex', flexDirection: 'column', alignItems: 'center' } }>
+      <div className="recipe-details">
         <h1>Detalhes da Receita</h1>
         <RecipeCard />
         { recipe.type === 'comidas'
@@ -166,7 +167,7 @@ function RecipeDetails() {
               />
             </div>
           ) }
-        <div>
+        <div className="carousel-recomendation">
           <h1>Recomendadas</h1>
           {renderRecommendations()}
         </div>

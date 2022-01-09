@@ -39,63 +39,74 @@ function RecipeCard() {
   return (
     <div>
       <img
-        className="imageDetails"
+        className="image-details"
         src={ recipe.image }
         alt={ recipe.title }
         data-testid="recipe-photo"
       />
-      <div>
-        <h2 data-testid="recipe-title">{ recipe.title }</h2>
-        <input
-          alt="Compartilhar"
-          data-testid="share-btn"
-          onClick={ getClipboard }
-          style={ { marginLeft: '20px' } }
-          src={ shareIcon }
-          type="image"
-        />
+      <div className="header-recipe">
+        <div>
+          <h2 data-testid="recipe-title">{ recipe.title }</h2>
+          <p
+            data-testid="recipe-category"
+          >
+            {getCategory(recipe)}
+          </p>
+          <div className="icons-svg">
+            <input
+              className="share-icon"
+              alt="Compartilhar"
+              data-testid="share-btn"
+              onClick={ getClipboard }
+              src={ shareIcon }
+              type="image"
+            />
+
+            <input
+              alt="Favoritar"
+              data-testid="favorite-btn"
+              src={ favoriteIcon }
+              type="image"
+            />
+          </div>
+          {
+            clipboard && (
+              <p className="link-copy">Link copiado!</p>
+            )
+          }
+        </div>
+
+      </div>
+
+      <div className="container-recipe">
+        <h1>Ingredients</h1>
+        <IngredientsList />
         {
-          clipboard && (
-            <p>Link copiado!</p>
+          pathname.includes('in-progress') && (
+            <Link to="/receitas-feitas">
+              <button
+                disabled={ doneRecipe }
+                data-testid="finish-recipe-btn"
+                type="button"
+                className="button-finish-recipe"
+                onClick={ () => setDoneRecipeToLocalStorage(
+                  recipe, params.id, createDate,
+                ) }
+              >
+                Finalizar Receita
+              </button>
+            </Link>
           )
         }
-        <input
-          alt="Favoritar"
-          data-testid="favorite-btn"
-          src={ favoriteIcon }
-          type="image"
-        />
+        <h1>Instructions</h1>
+        <p
+          data-testid="instructions"
+        >
+          {
+            recipe.strInstructions
+          }
+        </p>
       </div>
-      <p
-        data-testid="recipe-category"
-      >
-        {getCategory(recipe)}
-      </p>
-      <h1>Ingredients</h1>
-      <IngredientsList />
-      {
-        pathname.includes('in-progress') && (
-          <Link to="/receitas-feitas">
-            <button
-              disabled={ doneRecipe }
-              data-testid="finish-recipe-btn"
-              type="button"
-              style={ { padding: '15px' } }
-              onClick={ () => setDoneRecipeToLocalStorage(recipe, params.id, createDate) }
-            >
-              Finalizar Receita
-            </button>
-          </Link>
-        )
-      }
-      <h1>Instructions</h1>
-      <p
-        data-testid="instructions"
-      >
-        {
-          recipe.strInstructions
-        }
-      </p>
     </div>
   );
 }

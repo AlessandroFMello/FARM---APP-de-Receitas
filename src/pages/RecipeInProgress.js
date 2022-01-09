@@ -10,7 +10,8 @@ function RecipeInProgress() {
   }, []);
 
   return (
-    <div>
+    <div className="recipe-in-progress">
+      <h1>Receita em Andamento</h1>
       <RecipeCard />
     </div>
   );
