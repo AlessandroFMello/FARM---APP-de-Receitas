@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import RecipeCard from '../components/body-components/RecipeCard';
+import RecipesContext from '../context/RecipesContext';
 
 function RecipeInProgress() {
+  const { ifDoesntExistsCreateALocalStorageKey } = useContext(RecipesContext);
   useEffect(() => {
-    const storageDoneRecipesKeyExists = localStorage.getItem('doneRecipes');
-    if (storageDoneRecipesKeyExists === null) {
-      return localStorage.setItem('doneRecipes', JSON.stringify([]));
-    }
-  }, []);
+    ifDoesntExistsCreateALocalStorageKey('doneRecipes', []);
+  }, [ifDoesntExistsCreateALocalStorageKey]);
 
   return (
     <div>

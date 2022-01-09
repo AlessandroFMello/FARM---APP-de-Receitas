@@ -13,6 +13,7 @@ function RecipeDetails() {
     getLocalStorageFirstTime,
     setAlreadyDone,
     alreadyDone,
+    ifDoesntExistsCreateALocalStorageKey,
   } = useContext(RecipesContext);
   const [recomendations, setRecomendations] = useState({});
   const [inProgress, setInProgress] = useState(false);
@@ -39,10 +40,7 @@ function RecipeDetails() {
   ]);
 
   useEffect(() => {
-    const storageDoneRecipesKeyExists = localStorage.getItem('doneRecipes');
-    if (storageDoneRecipesKeyExists === null) {
-      localStorage.setItem('doneRecipes', JSON.stringify([]));
-    }
+    ifDoesntExistsCreateALocalStorageKey('doneRecipes', []);
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     const wichRecipeType = {
       bebidas: [recipe.strDrink],
@@ -57,7 +55,12 @@ function RecipeDetails() {
         return setAlreadyDone(true);
       }
     }
-  }, [recipe, setAlreadyDone, alreadyDone]);
+  }, [
+    recipe,
+    setAlreadyDone,
+    alreadyDone,
+    ifDoesntExistsCreateALocalStorageKey,
+  ]);
 
   useEffect(() => {
     if (recipe.type) {
