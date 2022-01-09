@@ -64,9 +64,9 @@ function IngredientsList() {
     const { type } = recipe;
     const { id } = params;
     let newLocalStorage = {};
+    const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
     if (target.checked) {
       setCheck((prev) => [...prev, name]);
-      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
       if (inprogress[wichAPI[type]][id]) {
         const prev = [...inprogress[wichAPI[type]][id]];
         newLocalStorage = {
@@ -89,7 +89,6 @@ function IngredientsList() {
     } else {
       const filtered = check.filter((el) => el !== name);
       setCheck(filtered);
-      const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
       if (inprogress[wichAPI[type]][id]) {
         const prev = [...inprogress[wichAPI[type]][id]];
         const filter = prev.filter((el) => el !== name);

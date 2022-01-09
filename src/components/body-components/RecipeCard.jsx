@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import useClippy from 'use-clippy';
 import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
@@ -8,7 +8,13 @@ import favoriteIcon from '../../images/whiteHeartIcon.svg';
 
 function RecipeCard() {
   const [clipboard, setClipboard] = useClippy();
-  const { recipe, getRecipe } = useContext(RecipesContext);
+  const {
+    recipe,
+    getRecipe,
+    doneRecipe,
+    setDoneRecipeToLocalStorage,
+    createDate,
+  } = useContext(RecipesContext);
   const { pathname } = useLocation();
   const params = useParams();
 
@@ -67,6 +73,21 @@ function RecipeCard() {
       </p>
       <h1>Ingredients</h1>
       <IngredientsList />
+      {
+        pathname.includes('in-progress') && (
+          <Link to="/receitas-feitas">
+            <button
+              disabled={ doneRecipe }
+              data-testid="finish-recipe-btn"
+              type="button"
+              style={ { padding: '15px' } }
+              onClick={ () => setDoneRecipeToLocalStorage(recipe, params.id, createDate) }
+            >
+              Finalizar Receita
+            </button>
+          </Link>
+        )
+      }
       <h1>Instructions</h1>
       <p
         data-testid="instructions"

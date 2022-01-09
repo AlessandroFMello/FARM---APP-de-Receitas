@@ -31,6 +31,47 @@ function RecipesProvider({ children }) {
     [],
   );
 
+  const createDate = () => {
+    const d = new Date();
+    const limit = 10;
+    const month = d.getMonth() || 1;
+    if (month < limit) {
+      return `${d.getDate()}/0${month}/${d.getFullYear()}`;
+    }
+    return `${d.getDate()}/${month}/${d.getFullYear()}`;
+  };
+
+  const setDoneRecipeToLocalStorage = (actualRecipe, params, createDateFn) => {
+    const storageDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    const wichRecipeType = {
+      bebidas: ['bebida',
+        actualRecipe.strAlcoholic, actualRecipe.strDrink, actualRecipe.strDrinkThumb],
+      comidas: ['comida', '', actualRecipe.strMeal, actualRecipe.strMealThumb],
+    };
+    const area = actualRecipe.strArea || '';
+    const category = actualRecipe.strCategory || '';
+    const tags = actualRecipe.strTags || '';
+    const newDoneRecipesLocalStorage = {
+      id: params.id,
+      type: wichRecipeType[actualRecipe.type][0],
+      area,
+      category,
+      alcoholicOrNot: wichRecipeType[actualRecipe.type][1],
+      name: wichRecipeType[actualRecipe.type][2],
+      image: wichRecipeType[actualRecipe.type][3],
+      doneDate: createDateFn(),
+      tags,
+    };
+
+    let newLocalStorage = [newDoneRecipesLocalStorage];
+
+    if (storageDoneRecipes.length > 0) {
+      newLocalStorage = [...storageDoneRecipes, newDoneRecipesLocalStorage];
+    }
+
+    localStorage.setItem('doneRecipes', JSON.stringify(newLocalStorage));
+  };
+
   const getLocalStorageFirstTime = useCallback(
     (pathname, id, setCheck) => {
       const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
@@ -128,6 +169,8 @@ function RecipesProvider({ children }) {
     verifyIfAllIngredientsChecked,
     getLocalStorageFirstTime,
     getIngredient,
+    setDoneRecipeToLocalStorage,
+    createDate,
   };
 
   return (

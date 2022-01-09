@@ -6,10 +6,9 @@ import fetchAPI from '../services/fetchAPI';
 
 function RecipeDetails() {
   const history = useHistory();
-  // const params = useParams();
-
   const { recipe } = useContext(RecipesContext);
   const [recomendations, setRecomendations] = useState({});
+  const [alreadyDone, setAlreadyDone] = useState(false);
 
   function getYoutubeUrl() {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -17,6 +16,27 @@ function RecipeDetails() {
 
     return `${baseUrl}${videoId}`;
   }
+
+  useEffect(() => {
+    const storageDoneRecipesKeyExists = localStorage.getItem('doneRecipes');
+    if (storageDoneRecipesKeyExists === null) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
+    }
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    const wichRecipeType = {
+      bebidas: [recipe.strDrink],
+      comidas: [recipe.strMeal],
+    };
+    const verifyIfItsNotDone = (!alreadyDone) && doneRecipes.length > 0;
+    const iAlreadyHaveRecipe = wichRecipeType[recipe.type];
+    if (verifyIfItsNotDone && iAlreadyHaveRecipe) {
+      const recipeName = wichRecipeType[recipe.type][0];
+      const isDone = doneRecipes.some((el) => recipeName === el.name);
+      if (isDone) {
+        return setAlreadyDone(true);
+      }
+    }
+  }, [recipe, setAlreadyDone, alreadyDone]);
 
   useEffect(() => {
     if (recipe.type) {
@@ -126,15 +146,19 @@ function RecipeDetails() {
           <h1>Recomendadas</h1>
           {renderRecommendations()}
         </div>
-        <Link to={ `${history.location.pathname}/in-progress` }>
-          <button
-            className="start-recipe"
-            data-testid="start-recipe-btn"
-            type="button"
-          >
-            Iniciar Receita
-          </button>
-        </Link>
+        {
+          !alreadyDone && (
+            <Link to={ `${history.location.pathname}/in-progress` }>
+              <button
+                className="start-recipe"
+                data-testid="start-recipe-btn"
+                type="button"
+              >
+                Iniciar Receita
+              </button>
+            </Link>
+          )
+        }
       </div>
     );
   }

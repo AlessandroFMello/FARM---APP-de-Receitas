@@ -1,22 +1,17 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import RecipeCard from '../components/body-components/RecipeCard';
-import RecipesContext from '../context/RecipesContext';
 
 function RecipeInProgress() {
-  const { doneRecipe } = useContext(RecipesContext);
+  useEffect(() => {
+    const storageDoneRecipesKeyExists = localStorage.getItem('doneRecipes');
+    if (storageDoneRecipesKeyExists === null) {
+      return localStorage.setItem('doneRecipes', JSON.stringify([]));
+    }
+  }, []);
+
   return (
     <div>
       <RecipeCard />
-      <Link to="/receitas-feitas">
-        <button
-          disabled={ doneRecipe }
-          data-testid="finish-recipe-btn"
-          type="button"
-        >
-          Finalizar Receita
-        </button>
-      </Link>
     </div>
   );
 }
