@@ -91,15 +91,15 @@ function RecipeDetails() {
       if (recipe.type === 'comidas') {
         return {
           ...element,
-          image: element['strDrinkThumb'],
-          title: element['strDrink'],
+          image: element.strDrinkThumb,
+          title: element.strDrink,
           type: 'bebidas',
         };
       }
       return {
         ...element,
-        image: element['strMealThumb'],
-        title: element['strMeal'],
+        image: element.strMealThumb,
+        title: element.strMeal,
         type: 'comidas',
       };
     });
