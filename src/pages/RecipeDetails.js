@@ -158,7 +158,7 @@ function RecipeDetails() {
             <div>
               <iframe
                 data-testid="video"
-                width="100vw"
+                width="auto"
                 height="auto"
                 src={ getYoutubeUrl() }
                 title="YouTube video player"
