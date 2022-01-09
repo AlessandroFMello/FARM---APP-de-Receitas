@@ -100,6 +100,7 @@ function RecipeCard() {
         }
         <h1>Instructions</h1>
         <p
+          className="instructions"
           data-testid="instructions"
         >
           {
