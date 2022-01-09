@@ -73,7 +73,7 @@ function RecipesProvider({ children }) {
   };
 
   const getLocalStorageFirstTime = useCallback(
-    (pathname, id, setCheck) => {
+    (pathname, id, setCheck, actionType) => {
       const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
       if (inProgressRecipes === null) {
         const first = {
@@ -89,8 +89,19 @@ function RecipesProvider({ children }) {
       const verifyType = pathname.match('bebidas') || pathname.match('comidas');
       const type = verifyType[0];
       const arrayOfIngredients = inProgressRecipes[recipeTypes[type]][id];
-      if (arrayOfIngredients) {
-        setCheck([...arrayOfIngredients]);
+      switch (actionType) {
+      case 'getInProgress':
+        if (arrayOfIngredients) {
+          return arrayOfIngredients;
+        }
+        break;
+      case 'checkIngredients':
+        if (arrayOfIngredients) {
+          setCheck([...arrayOfIngredients]);
+        }
+        break;
+      default:
+        return 0;
       }
     },
     [],

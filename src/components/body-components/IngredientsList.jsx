@@ -16,7 +16,7 @@ function IngredientsList() {
   const params = useParams();
 
   useEffect(() => {
-    getLocalStorageFirstTime(pathname, params.id, setCheck);
+    getLocalStorageFirstTime(pathname, params.id, setCheck, 'checkIngredients');
   }, [
     getLocalStorageFirstTime,
     pathname,

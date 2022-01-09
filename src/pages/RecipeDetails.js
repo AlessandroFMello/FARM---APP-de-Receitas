@@ -1,14 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams, useLocation } from 'react-router-dom';
 import RecipeCard from '../components/body-components/RecipeCard';
 import RecipesContext from '../context/RecipesContext';
 import fetchAPI from '../services/fetchAPI';
 
 function RecipeDetails() {
   const history = useHistory();
-  const { recipe } = useContext(RecipesContext);
+  const params = useParams();
+  const { pathname } = useLocation();
+  const { recipe, getLocalStorageFirstTime } = useContext(RecipesContext);
   const [recomendations, setRecomendations] = useState({});
   const [alreadyDone, setAlreadyDone] = useState(false);
+  const [inProgress, setInProgress] = useState(false);
 
   function getYoutubeUrl() {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -16,6 +19,20 @@ function RecipeDetails() {
 
     return `${baseUrl}${videoId}`;
   }
+
+  useEffect(() => {
+    const imInProgress = getLocalStorageFirstTime(
+      pathname, params.id, () => '', 'getInProgress',
+    );
+    if (imInProgress) {
+      setInProgress(true);
+    }
+  }, [
+    getLocalStorageFirstTime,
+    pathname,
+    params,
+    setInProgress,
+  ]);
 
   useEffect(() => {
     const storageDoneRecipesKeyExists = localStorage.getItem('doneRecipes');
@@ -97,6 +114,21 @@ function RecipeDetails() {
     });
   }
 
+  function inProgressOrNotButton() {
+    const text = inProgress ? 'Continuar Receita' : 'Iniciar Receita';
+    return (
+      <Link to={ `${history.location.pathname}/in-progress` }>
+        <button
+          className="start-recipe"
+          data-testid="start-recipe-btn"
+          type="button"
+        >
+          {text}
+        </button>
+      </Link>
+    );
+  }
+
   function renderRecommendations() {
     const slicedRecommendations = getRecommendationsValue();
     return (
@@ -147,16 +179,9 @@ function RecipeDetails() {
           {renderRecommendations()}
         </div>
         {
+          // criar in-progess true or false condition to change iniciar Receita btn to continuar receita
           !alreadyDone && (
-            <Link to={ `${history.location.pathname}/in-progress` }>
-              <button
-                className="start-recipe"
-                data-testid="start-recipe-btn"
-                type="button"
-              >
-                Iniciar Receita
-              </button>
-            </Link>
+            inProgressOrNotButton()
           )
         }
       </div>
