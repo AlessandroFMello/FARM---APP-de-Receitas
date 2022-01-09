@@ -61,8 +61,7 @@ function RecipeDetails() {
         let URL;
         if (recipe.type === 'comidas') {
           URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-        }
-        if (recipe.type === 'bebidas') {
+        } else {
           URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
         }
         const response = await fetchAPI(URL);
@@ -90,25 +89,17 @@ function RecipeDetails() {
 
     return slicedRecommendations.map((element) => {
       if (recipe.type === 'comidas') {
-        const {
-          strDrinkThumb,
-          strDrink,
-        } = element;
         return {
           ...element,
-          image: strDrinkThumb,
-          title: strDrink,
+          image: element['strDrinkThumb'],
+          title: element['strDrink'],
           type: 'bebidas',
         };
       }
-      const {
-        strMealThumb,
-        strMeal,
-      } = element;
       return {
         ...element,
-        image: strMealThumb,
-        title: strMeal,
+        image: element['strMealThumb'],
+        title: element['strMeal'],
         type: 'comidas',
       };
     });
@@ -179,7 +170,6 @@ function RecipeDetails() {
           {renderRecommendations()}
         </div>
         {
-          // criar in-progess true or false condition to change iniciar Receita btn to continuar receita
           !alreadyDone && (
             inProgressOrNotButton()
           )
