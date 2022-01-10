@@ -274,3 +274,8 @@ body {
   padding: 0 10px;
   text-align: justify;
 }
+
+.image-age {
+  margin-left: 10px;
+  width: 25px;
+}

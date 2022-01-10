@@ -6,6 +6,7 @@ import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
 import shareIcon from '../../images/shareIcon.svg';
 import FavoriteRecipeBtn from './FavoriteRecipeBtn';
+import age from '../../images/age.png';
 
 function RecipeCard() {
   // const [clipboard, setClipboard] = useClippy();
@@ -41,7 +42,6 @@ function RecipeCard() {
     if (item.type === 'comidas') {
       return item.strCategory;
     }
-
     return item.strAlcoholic;
   }
 
@@ -59,8 +59,23 @@ function RecipeCard() {
     }
   }
 
+  const age18 = (
+    <>
+      <span>{getCategory(recipe)}</span>
+      <img
+        className="image-age"
+        src={ age }
+        alt="age"
+      />
+
+    </>
+  );
+
+  const alcoholic = (getCategory(recipe) === 'Alcoholic');
+
   return (
     <div>
+
       <img
         className="image-details"
         src={ recipe.image }
@@ -73,7 +88,7 @@ function RecipeCard() {
           <p
             data-testid="recipe-category"
           >
-            {getCategory(recipe)}
+            { alcoholic ? age18 : getCategory(recipe) }
           </p>
           <div className="icons-svg">
             <input
