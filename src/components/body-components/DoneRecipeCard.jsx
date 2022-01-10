@@ -4,6 +4,7 @@ import RecipesContext from '../../context/RecipesContext';
 import shareIcon from '../../images/shareIcon.svg';
 
 export default function DoneRecipeCard() {
+  const [haveLink, setHaveLink] = useState(false);
   const [doneRecipesFromLocalStorage, setDoneRecipesFromLocalStorage] = useState([]);
 
   const { ifDoesntExistsCreateALocalStorageKey } = useContext(RecipesContext);
@@ -19,15 +20,27 @@ export default function DoneRecipeCard() {
     }
   }, [setDoneRecipesFromLocalStorage]);
 
-  function getClipboard() {
+  const TIME_OUT_LINK = 3000;
+
+  useEffect(() => {
+    let timeLink;
+
+    if (haveLink) {
+      timeLink = setTimeout(() => {
+        setHaveLink(false);
+      }, TIME_OUT_LINK);
+    }
+    return () => clearTimeout(timeLink);
+  }, [haveLink]);
+
+  function getClipboard(urlFragment) {
     const { href } = window.location;
-    const CUT_IN_PROGRESS = -12;
-    if (href.includes('in-progress')) {
-      copy(href.slice(0, CUT_IN_PROGRESS));
-      // setHaveLink(true);
-    } else {
-      copy(href);
-      // setHaveLink(true);
+    const tres = 3;
+    const domain = href.split('/').slice(0, tres).join('/');
+    copy(domain + urlFragment);
+
+    if (!haveLink) {
+      setHaveLink(true);
     }
   }
 
@@ -75,10 +88,15 @@ export default function DoneRecipeCard() {
               className="share-icon"
               alt="Compartilhar"
               data-testid={ `${index}-horizontal-share-btn` }
-              onClick={ getClipboard }
+              onClick={ () => getClipboard(`/${recipe.type}s/${recipe.id}`) }
               src={ shareIcon }
               type="image"
             />
+            {
+              haveLink && (
+                <p className="link-copy">Link copiado!</p>
+              )
+            }
             {
               doneRecipesFromLocalStorage[index].tags.map((tag) => (
                 <p
