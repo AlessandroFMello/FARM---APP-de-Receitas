@@ -50,6 +50,7 @@ function FavoriteRecipeBtn() {
   return (
     <input
       alt="Favoritar"
+      className="favorite-btn"
       data-testid="favorite-btn"
       onClick={ () => saveFavorite() }
       src={ favorite ? favoritedIcon : notFavoriteIcon }

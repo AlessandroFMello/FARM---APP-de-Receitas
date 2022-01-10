@@ -218,6 +218,11 @@ body {
   margin-right: 12px;
 }
 
+.favorite-btn {
+  height: 26px;
+  width: 26px;
+}
+
 .carousel-recomendation {
   overflow-x: scroll;
   overflow-y: hidden;
