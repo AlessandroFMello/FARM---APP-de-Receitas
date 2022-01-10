@@ -4,7 +4,7 @@ import useClippy from 'use-clippy';
 import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
 import shareIcon from '../../images/shareIcon.svg';
-import favoriteIcon from '../../images/whiteHeartIcon.svg';
+import FavoriteRecipeBtn from './FavoriteRecipeBtn';
 
 function RecipeCard() {
   const [clipboard, setClipboard] = useClippy();
@@ -12,8 +12,7 @@ function RecipeCard() {
     recipe,
     getRecipe,
     doneRecipe,
-    setDoneRecipeToLocalStorage,
-    createDate,
+    setAnyToLocalStorage,
   } = useContext(RecipesContext);
   const { pathname } = useLocation();
   const params = useParams();
@@ -62,12 +61,7 @@ function RecipeCard() {
               type="image"
             />
 
-            <input
-              alt="Favoritar"
-              data-testid="favorite-btn"
-              src={ favoriteIcon }
-              type="image"
-            />
+           <FavoriteRecipeBtn />
           </div>
           {
             clipboard && (
@@ -75,39 +69,35 @@ function RecipeCard() {
             )
           }
         </div>
-
       </div>
 
-      <div className="container-recipe">
-        <h1>Ingredients</h1>
-        <IngredientsList />
+      <h1>Ingredients</h1>
+      <IngredientsList />
+      {
+        pathname.includes('in-progress') && (
+          <Link to="/receitas-feitas">
+            <button
+              disabled={ doneRecipe }
+              data-testid="finish-recipe-btn"
+              type="button"
+              className="button-finish-recipe"
+              onClick={ () => setAnyToLocalStorage(recipe, 'doneRecipes') }
+            >
+              Finalizar Receita
+            </button>
+          </Link>
+        )
+      }
+      <h1>Instructions</h1>
+      <p
+        className="instructions"
+        data-testid="instructions"
+      >
         {
-          pathname.includes('in-progress') && (
-            <Link to="/receitas-feitas">
-              <button
-                disabled={ doneRecipe }
-                data-testid="finish-recipe-btn"
-                type="button"
-                className="button-finish-recipe"
-                onClick={ () => setDoneRecipeToLocalStorage(
-                  recipe, params.id, createDate,
-                ) }
-              >
-                Finalizar Receita
-              </button>
-            </Link>
-          )
+          recipe.strInstructions
         }
-        <h1>Instructions</h1>
-        <p
-          className="instructions"
-          data-testid="instructions"
-        >
-          {
-            recipe.strInstructions
-          }
-        </p>
-      </div>
+      </p>
+
     </div>
   );
 }

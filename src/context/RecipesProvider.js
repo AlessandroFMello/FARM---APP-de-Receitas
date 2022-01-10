@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import RecipesContext from './RecipesContext';
 import fetchAPI from '../services/fetchAPI';
 
@@ -14,9 +14,6 @@ function RecipesProvider({ children }) {
   const [doneRecipe, setDoneRecipe] = useState(true);
   const [alreadyDone, setAlreadyDone] = useState(false);
 
-  // useCallback(parâmetro1, parâmetro2)
-  // parâmetro1: função a ser retornada
-  // parâmetro2: array de dependências
   const initialFetch = useCallback(
     async () => {
       const mealUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -32,6 +29,18 @@ function RecipesProvider({ children }) {
     [],
   );
 
+  function ifDoesntExistsCreateALocalStorageKey(keyName, value) {
+    const storageDoneRecipesKeyExists = localStorage.getItem(keyName);
+    const keyValue = value;
+    if (storageDoneRecipesKeyExists === null) {
+      return localStorage.setItem(keyName, JSON.stringify(keyValue));
+    }
+  }
+
+  function getAnyFromLocalStorage(key) {
+    return localStorage.getItem(key);
+  }
+
   const createDate = () => {
     const d = new Date();
     const limit = 10;
@@ -42,35 +51,41 @@ function RecipesProvider({ children }) {
     return `${d.getDate()}/${month}/${d.getFullYear()}`;
   };
 
-  const setDoneRecipeToLocalStorage = (actualRecipe, params, createDateFn) => {
-    const storageDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+  const setAnyToLocalStorage = (actualRecipe, storageKey) => {
+    const storageToLookAt = JSON.parse(localStorage.getItem(storageKey));
     const wichRecipeType = {
-      bebidas: ['bebida',
-        actualRecipe.strAlcoholic, actualRecipe.strDrink, actualRecipe.strDrinkThumb],
-      comidas: ['comida', '', actualRecipe.strMeal, actualRecipe.strMealThumb],
+      bebidas: [
+        'bebida',
+        actualRecipe.strAlcoholic,
+        actualRecipe.strDrink,
+        actualRecipe.strDrinkThumb,
+        actualRecipe.idDrink,
+      ],
+      comidas: ['comida',
+        '', actualRecipe.strMeal, actualRecipe.strMealThumb, actualRecipe.idMeal],
     };
     const area = actualRecipe.strArea || '';
     const category = actualRecipe.strCategory || '';
     const tags = actualRecipe.strTags || '';
     const newDoneRecipesLocalStorage = {
-      id: params.id,
+      id: wichRecipeType[actualRecipe.type][4],
       type: wichRecipeType[actualRecipe.type][0],
       area,
       category,
       alcoholicOrNot: wichRecipeType[actualRecipe.type][1],
       name: wichRecipeType[actualRecipe.type][2],
       image: wichRecipeType[actualRecipe.type][3],
-      doneDate: createDateFn(),
-      tags,
     };
-
+    if (storageKey === 'doneRecipes') {
+      newDoneRecipesLocalStorage.doneDate = createDate();
+      newDoneRecipesLocalStorage.tags = tags;
+    }
     let newLocalStorage = [newDoneRecipesLocalStorage];
 
-    if (storageDoneRecipes.length > 0) {
-      newLocalStorage = [...storageDoneRecipes, newDoneRecipesLocalStorage];
+    if (storageToLookAt.length > 0) {
+      newLocalStorage = [...storageToLookAt, newDoneRecipesLocalStorage];
     }
-
-    localStorage.setItem('doneRecipes', JSON.stringify(newLocalStorage));
+    localStorage.setItem(storageKey, JSON.stringify(newLocalStorage));
   };
 
   const getLocalStorageFirstTime = useCallback(
@@ -181,10 +196,11 @@ function RecipesProvider({ children }) {
     verifyIfAllIngredientsChecked,
     getLocalStorageFirstTime,
     getIngredient,
-    setDoneRecipeToLocalStorage,
-    createDate,
     alreadyDone,
     setAlreadyDone,
+    ifDoesntExistsCreateALocalStorageKey,
+    getAnyFromLocalStorage,
+    setAnyToLocalStorage,
   };
 
   return (
