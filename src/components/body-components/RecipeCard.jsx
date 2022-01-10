@@ -61,7 +61,7 @@ function RecipeCard() {
               type="image"
             />
 
-           <FavoriteRecipeBtn />
+            <FavoriteRecipeBtn />
           </div>
           {
             clipboard && (
