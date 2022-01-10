@@ -1,13 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams, Link } from 'react-router-dom';
-import useClippy from 'use-clippy';
+// import useClippy from 'use-clippy';
+import copy from 'clipboard-copy';
 import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
 import shareIcon from '../../images/shareIcon.svg';
 import FavoriteRecipeBtn from './FavoriteRecipeBtn';
 
 function RecipeCard() {
-  const [clipboard, setClipboard] = useClippy();
+  // const [clipboard, setClipboard] = useClippy();
+  const [haveLink, setHaveLink] = useState(false);
   const {
     recipe,
     getRecipe,
@@ -22,6 +24,19 @@ function RecipeCard() {
     console.log('[RecipeDetails] Fetch do Recipe');
   }, [getRecipe, params, pathname]);
 
+  const TIME_OUT_LINK = 3000;
+
+  useEffect(() => {
+    let timeLink;
+
+    if (haveLink) {
+      timeLink = setTimeout(() => {
+        setHaveLink(false);
+      }, TIME_OUT_LINK);
+    }
+    return () => clearTimeout(timeLink);
+  }, [haveLink]);
+
   function getCategory(item) {
     if (item.type === 'comidas') {
       return item.strCategory;
@@ -34,9 +49,13 @@ function RecipeCard() {
     const { href } = window.location;
     const CUT_IN_PROGRESS = -12;
     if (href.includes('in-progress')) {
-      setClipboard(href.slice(0, CUT_IN_PROGRESS));
+      // setClipboard(href.slice(0, CUT_IN_PROGRESS));
+      copy(href.slice(0, CUT_IN_PROGRESS));
+      setHaveLink(true);
     } else {
-      setClipboard(href);
+      // setClipboard(href);
+      copy(href);
+      setHaveLink(true);
     }
   }
 
@@ -69,7 +88,7 @@ function RecipeCard() {
             <FavoriteRecipeBtn />
           </div>
           {
-            clipboard && (
+            haveLink && (
               <p className="link-copy">Link copiado!</p>
             )
           }
