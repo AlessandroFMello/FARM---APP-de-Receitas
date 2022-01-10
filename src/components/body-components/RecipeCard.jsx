@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams, Link } from 'react-router-dom';
-// import useClippy from 'use-clippy';
 import copy from 'clipboard-copy';
 import RecipesContext from '../../context/RecipesContext';
 import IngredientsList from './IngredientsList';
@@ -9,7 +8,6 @@ import FavoriteRecipeBtn from './FavoriteRecipeBtn';
 import age from '../../images/age.png';
 
 function RecipeCard() {
-  // const [clipboard, setClipboard] = useClippy();
   const [haveLink, setHaveLink] = useState(false);
   const {
     recipe,
@@ -49,11 +47,9 @@ function RecipeCard() {
     const { href } = window.location;
     const CUT_IN_PROGRESS = -12;
     if (href.includes('in-progress')) {
-      // setClipboard(href.slice(0, CUT_IN_PROGRESS));
       copy(href.slice(0, CUT_IN_PROGRESS));
       setHaveLink(true);
     } else {
-      // setClipboard(href);
       copy(href);
       setHaveLink(true);
     }
