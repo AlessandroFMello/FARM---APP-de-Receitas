@@ -186,9 +186,9 @@ body {
 }
 
 .image-details {
-  height: 180px;
+  height: 120px;
   object-fit: cover;
-  object-position: center 50%;
+  object-position: center 45%;
   width: 100vw;
 }
 
