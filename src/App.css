@@ -210,6 +210,10 @@ body {
   width: 100%;
 }
 
+.icons-svg {
+  padding: 0 15px;
+}
+
 .share-icon {
   margin-right: 12px;
 }
