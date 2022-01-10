@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import ExploreHeader from '../components/ExploreHeader';
 import Footer from '../components/Footer';
 
@@ -9,15 +10,29 @@ function Explore() {
   return (
     <div>
       <ExploreHeader pageName={ pageName } />
+      <div className="profile-page-container">
+        <Link to="/explorar/comidas">
+          <Button
+            data-testid="explore-food"
+            type="button"
+            variant="light"
+          >
+            Explorar Comidas
+          </Button>
+        </Link>
+        <Link to="/explorar/bebidas">
+          <Button
+            data-testid="explore-drinks"
+            type="button"
+            variant="light"
+          >
+            Explorar Bebidas
+          </Button>
+        </Link>
+      </div>
       <Footer />
     </div>
   );
 }
-
-Explore.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }).isRequired,
-};
 
 export default Explore;
