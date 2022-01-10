@@ -48,11 +48,19 @@ export default function DoneRecipeCard() {
             />
           </div>
           <div>
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              { `${recipe.area} - ${recipe.category}` }
-            </p>
+            { recipe.type === 'comida' ? (
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                { `${recipe.area} - ${recipe.category}` }
+              </p>
+            ) : (
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                { recipe.alcoholicOrNot }
+              </p>
+            ) }
             <h1
               data-testid={ `${index}-horizontal-name` }
             >
