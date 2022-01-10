@@ -1,15 +1,22 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams, useLocation } from 'react-router-dom';
 import RecipeCard from '../components/body-components/RecipeCard';
 import RecipesContext from '../context/RecipesContext';
 import fetchAPI from '../services/fetchAPI';
 
 function RecipeDetails() {
   const history = useHistory();
-  // const params = useParams();
-
-  const { recipe } = useContext(RecipesContext);
+  const params = useParams();
+  const { pathname } = useLocation();
+  const {
+    recipe,
+    getLocalStorageFirstTime,
+    setAlreadyDone,
+    alreadyDone,
+    ifDoesntExistsCreateALocalStorageKey,
+  } = useContext(RecipesContext);
   const [recomendations, setRecomendations] = useState({});
+  const [inProgress, setInProgress] = useState(false);
 
   function getYoutubeUrl() {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -19,21 +26,55 @@ function RecipeDetails() {
   }
 
   useEffect(() => {
+    const imInProgress = getLocalStorageFirstTime(
+      pathname, params.id, () => '', 'getInProgress',
+    );
+    if (imInProgress) {
+      setInProgress(true);
+    }
+  }, [
+    getLocalStorageFirstTime,
+    pathname,
+    params,
+    setInProgress,
+  ]);
+
+  useEffect(() => {
+    ifDoesntExistsCreateALocalStorageKey('doneRecipes', []);
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    const wichRecipeType = {
+      bebidas: [recipe.strDrink],
+      comidas: [recipe.strMeal],
+    };
+    const verifyIfItsNotDone = !alreadyDone && doneRecipes.length > 0;
+    const iAlreadyHaveRecipe = wichRecipeType[recipe.type];
+    if (verifyIfItsNotDone && iAlreadyHaveRecipe) {
+      const recipeName = wichRecipeType[recipe.type][0];
+      const isDone = doneRecipes.some((el) => recipeName === el.name);
+      if (isDone) {
+        return setAlreadyDone(true);
+      }
+    }
+  }, [
+    recipe,
+    setAlreadyDone,
+    alreadyDone,
+    ifDoesntExistsCreateALocalStorageKey,
+  ]);
+
+  useEffect(() => {
     if (recipe.type) {
       const getRecommendations = async () => {
         let URL;
         if (recipe.type === 'comidas') {
           URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-        }
-        if (recipe.type === 'bebidas') {
+        } else {
           URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
         }
         const response = await fetchAPI(URL);
         setRecomendations(response);
       };
-
       getRecommendations();
-      console.log('[RecipeDetails] Fetch das recommendations');
     }
   }, [recipe]);
 
@@ -41,7 +82,6 @@ function RecipeDetails() {
     if (item.type === 'comidas') {
       return item.strCategory;
     }
-
     return item.strAlcoholic;
   }
 
@@ -53,28 +93,36 @@ function RecipeDetails() {
 
     return slicedRecommendations.map((element) => {
       if (recipe.type === 'comidas') {
-        const {
-          strDrinkThumb,
-          strDrink,
-        } = element;
         return {
           ...element,
-          image: strDrinkThumb,
-          title: strDrink,
+          image: element.strDrinkThumb,
+          title: element.strDrink,
           type: 'bebidas',
         };
       }
-      const {
-        strMealThumb,
-        strMeal,
-      } = element;
       return {
         ...element,
-        image: strMealThumb,
-        title: strMeal,
+        image: element.strMealThumb,
+        title: element.strMeal,
         type: 'comidas',
       };
     });
+  }
+
+  function inProgressOrNotButton() {
+    const text = inProgress ? 'Continuar Receita' : 'Iniciar Receita';
+    return (
+      <Link to={ `${history.location.pathname}/in-progress` }>
+        <button
+          className="start-recipe"
+          data-testid="start-recipe-btn"
+          style={ { padding: '15px' } }
+          type="button"
+        >
+          {text}
+        </button>
+      </Link>
+    );
   }
 
   function renderRecommendations() {
@@ -82,20 +130,21 @@ function RecipeDetails() {
     return (
       slicedRecommendations.map((recomendation, index) => (
         <div
-          hidden={ index >= 2 }
+          className="recomendation-card"
           key={ `${recomendation}.${index}` }
           data-testid={ `${index}-recomendation-card` }
         >
           <img
+            className="img-recomendation"
             src={ recomendation.image }
             alt={ recomendation.title }
           />
           <p>{getCategory(recomendation)}</p>
           <h2
+            className="recomendation-title"
             data-testid={ `${index}-recomendation-title` }
           >
             { recomendation.title }
-
           </h2>
         </div>
       ))
@@ -104,7 +153,7 @@ function RecipeDetails() {
 
   function renderRecipe() {
     return (
-      <div>
+      <div className="recipe-details">
         <h1>Detalhes da Receita</h1>
         <RecipeCard />
         { recipe.type === 'comidas'
@@ -112,8 +161,8 @@ function RecipeDetails() {
             <div>
               <iframe
                 data-testid="video"
-                width="560"
-                height="315"
+                width="auto"
+                height="auto"
                 src={ getYoutubeUrl() }
                 title="YouTube video player"
                 frameBorder="0"
@@ -121,19 +170,15 @@ function RecipeDetails() {
               />
             </div>
           ) }
-        <div>
+        <div className="carousel-recomendation">
           <h1>Recomendadas</h1>
           {renderRecommendations()}
         </div>
-        <Link to={ `${history.location.pathname}/in-progress` }>
-          <button
-            className="start-recipe"
-            data-testid="start-recipe-btn"
-            type="button"
-          >
-            Iniciar Receita
-          </button>
-        </Link>
+        {
+          !alreadyDone && (
+            inProgressOrNotButton()
+          )
+        }
       </div>
     );
   }

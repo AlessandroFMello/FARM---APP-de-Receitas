@@ -86,7 +86,7 @@ function RecipesCategories({ recipeType }) {
           onClick={ getItemsByCategory }
           value={ category }
         >
-          {category}
+          {category.split(' ')[0].split('/')[0]}
         </button>
       ))}
     </section>

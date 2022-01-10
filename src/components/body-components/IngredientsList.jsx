@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 
 function IngredientsList() {
@@ -7,37 +7,37 @@ function IngredientsList() {
     recipe,
     setDoneRecipe,
     verifyIfAllIngredientsChecked,
+    getLocalStorageFirstTime,
+    getIngredient,
   } = useContext(RecipesContext);
   const { pathname } = useLocation();
-  const [ingredientsLength, setIngredientsLength] = useState(0);
-  const [checkedIngredients, setCheckedIngredients] = useState(0);
+  const [check, setCheck] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const params = useParams();
 
   useEffect(() => {
-    verifyIfAllIngredientsChecked(ingredientsLength, checkedIngredients);
+    getLocalStorageFirstTime(pathname, params.id, setCheck, 'checkIngredients');
   }, [
-    verifyIfAllIngredientsChecked,
-    checkedIngredients,
-    ingredientsLength,
-    setDoneRecipe,
+    getLocalStorageFirstTime,
+    pathname,
+    params,
+    setCheck,
   ]);
 
-  function getIngredient() {
-    const max = 20;
-    const ingredientsArr = [];
-
-    for (let i = 1; i < max; i += 1) {
-      if (recipe[`strIngredient${i}`]) {
-        ingredientsArr.push({
-          ingredient: recipe[`strIngredient${i}`],
-          measure: recipe[`strMeasure${i}`],
-        });
-      }
+  useEffect(() => {
+    if (Object.keys(recipe).length > 0) {
+      getIngredient(recipe, setIngredients);
     }
-    console.log(pathname);
-    return ingredientsArr;
-  }
+  }, [getIngredient, recipe, setIngredients]);
 
-  const ingredients = getIngredient();
+  useEffect(() => {
+    verifyIfAllIngredientsChecked(ingredients.length, check.length);
+  }, [
+    verifyIfAllIngredientsChecked,
+    ingredients,
+    check,
+    setDoneRecipe,
+  ]);
 
   function getIngredientList() {
     return (
@@ -55,15 +55,56 @@ function IngredientsList() {
     );
   }
 
-  function lineThroughIngredient({ target }) {
-    setIngredientsLength(ingredients.length);
-    const father = target.parentElement;
-    if (target.checked) {
-      father.style.textDecoration = 'line-through';
-      setCheckedIngredients((prev) => prev + 1);
-    } else if (!target.checked) {
-      father.style.textDecoration = 'none';
-      setCheckedIngredients((prev) => prev - 1);
+  function setToLocalStorage({ target }) {
+    const { name } = target;
+    const wichAPI = {
+      comidas: 'meals',
+      bebidas: 'cocktails',
+    };
+    const { type } = recipe;
+    const { id } = params;
+    let newLocalStorage = {};
+    const inprogress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const filtered = check.filter((el) => el !== name);
+    switch (target.checked) {
+    case true:
+      setCheck((prev) => [...prev, name]);
+      if (inprogress[wichAPI[type]][id]) {
+        const prev = [...inprogress[wichAPI[type]][id]];
+        newLocalStorage = {
+          ...inprogress,
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: [...prev, target.name],
+          },
+        };
+      } else {
+        newLocalStorage = {
+          ...inprogress,
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: [target.name],
+          },
+        };
+      }
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
+      break;
+    case false:
+      setCheck(filtered);
+      if (inprogress[wichAPI[type]][id]) {
+        const prev = [...inprogress[wichAPI[type]][id]];
+        const filter = prev.filter((el) => el !== name);
+        newLocalStorage = {
+          ...inprogress,
+          [wichAPI[type]]: {
+            ...inprogress[wichAPI[type]],
+            [id]: filter,
+          },
+        };
+        localStorage.setItem('inProgressRecipes', JSON.stringify(newLocalStorage));
+      }
+      break;
+    default:
     }
   }
 
@@ -74,15 +115,18 @@ function IngredientsList() {
       >
         {ingredients.map(({ ingredient, measure }, index) => (
           <label
-            className="ingredient-item"
+            className={ `ingredient-item ${check.includes(ingredient) && 'through'}` }
             key={ `${ingredient}.${index}` }
             htmlFor={ `${ingredient}.${index}` }
             data-testid={ `${index}-ingredient-step` }
           >
             <input
+              className="teste"
               type="checkbox"
+              defaultChecked={ check.includes(ingredient) }
               id={ `${ingredient}.${index}` }
-              onClick={ (e) => lineThroughIngredient(e) }
+              name={ `${ingredient}` }
+              onClick={ (e) => setToLocalStorage(e) }
             />
             {`${ingredient} `}
             {measure && `- ${measure}`}

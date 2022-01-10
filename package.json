@@ -19,6 +19,7 @@
     "react-logger": "^1.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "use-clippy": "^1.0.8",
     "websocket-extensions": ">=0.1.4"
   },
   "scripts": {
