@@ -15,7 +15,7 @@ function Explore() {
           <Button
             data-testid="explore-food"
             type="button"
-            variant="light"
+            variant="outline-dark"
           >
             Explorar Comidas
           </Button>
@@ -24,7 +24,7 @@ function Explore() {
           <Button
             data-testid="explore-drinks"
             type="button"
-            variant="light"
+            variant="outline-dark"
           >
             Explorar Bebidas
           </Button>

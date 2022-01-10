@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
+import { Link } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 import shareIcon from '../../images/shareIcon.svg';
 
-export default function DoneRecipeCard() {
+export default function DoneRecipeCard({ filterName }) {
+  const [haveLink, setHaveLink] = useState(false);
   const [doneRecipesFromLocalStorage, setDoneRecipesFromLocalStorage] = useState([]);
 
   const { ifDoesntExistsCreateALocalStorageKey } = useContext(RecipesContext);
@@ -19,15 +22,27 @@ export default function DoneRecipeCard() {
     }
   }, [setDoneRecipesFromLocalStorage]);
 
-  function getClipboard() {
+  const TIME_OUT_LINK = 3000;
+
+  useEffect(() => {
+    let timeLink;
+
+    if (haveLink) {
+      timeLink = setTimeout(() => {
+        setHaveLink(false);
+      }, TIME_OUT_LINK);
+    }
+    return () => clearTimeout(timeLink);
+  }, [haveLink]);
+
+  function getClipboard(urlFragment) {
     const { href } = window.location;
-    const CUT_IN_PROGRESS = -12;
-    if (href.includes('in-progress')) {
-      copy(href.slice(0, CUT_IN_PROGRESS));
-      // setHaveLink(true);
-    } else {
-      copy(href);
-      // setHaveLink(true);
+    const tres = 3;
+    const domain = href.split('/').slice(0, tres).join('/');
+    copy(domain + urlFragment);
+
+    if (!haveLink) {
+      setHaveLink(true);
     }
   }
 
@@ -35,55 +50,73 @@ export default function DoneRecipeCard() {
     return (
       <div>
         {console.log(doneRecipesFromLocalStorage)}
-        ;
         {doneRecipesFromLocalStorage.length > 0
-      && doneRecipesFromLocalStorage.map((recipe, index) => (
-        <div key={ recipe.name }>
-          <div>
-            <img
-              className="img-recomendation"
-              data-testid={ `${index}-horizontal-image` }
-              src={ recipe.image }
-              alt={ recipe.name }
-            />
-          </div>
-          <div>
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              { `${recipe.area} - ${recipe.category}` }
-            </p>
-            <h1
-              data-testid={ `${index}-horizontal-name` }
-            >
-              {recipe.name}
-            </h1>
-            <p
-              data-testid={ `${index}-horizontal-done-date` }
-            >
-              {`Feito em: ${recipe.doneDate}`}
-            </p>
-            <input
-              className="share-icon"
-              alt="Compartilhar"
-              data-testid={ `${index}-horizontal-share-btn` }
-              onClick={ getClipboard }
-              src={ shareIcon }
-              type="image"
-            />
-            {
-              doneRecipesFromLocalStorage[index].tags.map((tag) => (
+      && doneRecipesFromLocalStorage
+        .filter(({ type }) => type.includes(filterName))
+        .map((recipe, index) => (
+          <div key={ recipe.name }>
+            <div>
+              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+                <img
+                  className="img-recomendation"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ recipe.image }
+                  alt={ recipe.name }
+                />
+              </Link>
+            </div>
+            <div>
+              { recipe.type === 'comida' ? (
                 <p
-                  key={ tag }
-                  data-testid={ `${index}-${tag}-horizontal-tag` }
+                  data-testid={ `${index}-horizontal-top-text` }
                 >
-                  {tag}
+                  { `${recipe.area} - ${recipe.category}` }
                 </p>
-              ))
-            }
+              ) : (
+                <p
+                  data-testid={ `${index}-horizontal-top-text` }
+                >
+                  { recipe.alcoholicOrNot }
+                </p>
+              ) }
+              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+                <h1
+                  data-testid={ `${index}-horizontal-name` }
+                >
+                  {recipe.name}
+                </h1>
+              </Link>
+              <p
+                data-testid={ `${index}-horizontal-done-date` }
+              >
+                {`Feito em: ${recipe.doneDate}`}
+              </p>
+              <input
+                className="share-icon"
+                alt="Compartilhar"
+                data-testid={ `${index}-horizontal-share-btn` }
+                onClick={ () => getClipboard(`/${recipe.type}s/${recipe.id}`) }
+                src={ shareIcon }
+                type="image"
+              />
+              {
+                haveLink && (
+                  <p className="link-copy">Link copiado!</p>
+                )
+              }
+              {
+                doneRecipesFromLocalStorage[index].tags.map((tag) => (
+                  <p
+                    key={ tag }
+                    data-testid={ `${index}-${tag}-horizontal-tag` }
+                  >
+                    {tag}
+                  </p>
+                ))
+              }
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
       </div>
     );
   }
@@ -92,3 +125,11 @@ export default function DoneRecipeCard() {
     <div>{renderDoneRecipes()}</div>
   );
 }
+
+DoneRecipeCard.propTypes = {
+  filterName: PropTypes.oneOf(['comida', 'bebida', '']),
+};
+
+DoneRecipeCard.defaultProps = {
+  filterName: '',
+};
