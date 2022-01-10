@@ -66,7 +66,11 @@ function RecipesProvider({ children }) {
     };
     const area = actualRecipe.strArea || '';
     const category = actualRecipe.strCategory || '';
-    const tags = actualRecipe.strTags || '';
+    let teste = false;
+    if (actualRecipe.strTags !== null) {
+      teste = actualRecipe.strTags.split(', ');
+    }
+    const tags = teste || [];
     const newDoneRecipesLocalStorage = {
       id: wichRecipeType[actualRecipe.type][4],
       type: wichRecipeType[actualRecipe.type][0],
