@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
+import { Link } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 import shareIcon from '../../images/shareIcon.svg';
 
@@ -55,12 +56,14 @@ export default function DoneRecipeCard({ filterName }) {
         .map((recipe, index) => (
           <div key={ recipe.name }>
             <div>
-              <img
-                className="img-recomendation"
-                data-testid={ `${index}-horizontal-image` }
-                src={ recipe.image }
-                alt={ recipe.name }
-              />
+              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+                <img
+                  className="img-recomendation"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ recipe.image }
+                  alt={ recipe.name }
+                />
+              </Link>
             </div>
             <div>
               { recipe.type === 'comida' ? (
@@ -76,11 +79,13 @@ export default function DoneRecipeCard({ filterName }) {
                   { recipe.alcoholicOrNot }
                 </p>
               ) }
-              <h1
-                data-testid={ `${index}-horizontal-name` }
-              >
-                {recipe.name}
-              </h1>
+              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+                <h1
+                  data-testid={ `${index}-horizontal-name` }
+                >
+                  {recipe.name}
+                </h1>
+              </Link>
               <p
                 data-testid={ `${index}-horizontal-done-date` }
               >
