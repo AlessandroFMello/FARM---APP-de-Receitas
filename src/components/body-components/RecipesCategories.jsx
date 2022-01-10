@@ -6,6 +6,7 @@ import RecipesContext from '../../context/RecipesContext';
 function RecipesCategories({ recipeType }) {
   const [categories, setCategories] = useState([]);
   const [filterName, setFilterName] = useState('');
+  const [isAllButtonSelected, setIsAllButtonSelected] = useState(false);
 
   const { setRecipes } = useContext(RecipesContext);
 
@@ -42,6 +43,7 @@ function RecipesCategories({ recipeType }) {
 
   function toggleFilter(target) {
     if (filterName === target.value) {
+      document.getElementById(target.value).blur();
       setFilterName('');
       setRecipes({});
     } else {
@@ -50,6 +52,7 @@ function RecipesCategories({ recipeType }) {
   }
 
   async function getItemsByCategory({ target }) {
+    setIsAllButtonSelected(false);
     const valueTypeFilter = target.value;
 
     const MAX_CARDS = 12;
@@ -62,6 +65,13 @@ function RecipesCategories({ recipeType }) {
     toggleFilter(target);
   }
 
+  function handleAllButtonClick() {
+    setRecipes({});
+    setIsAllButtonSelected((prev) => !prev);
+
+    if (isAllButtonSelected) document.getElementById('all').blur();
+  }
+
   return (
     <section className="category-container">
       <button
@@ -70,7 +80,7 @@ function RecipesCategories({ recipeType }) {
         name="all"
         data-testid="All-category-filter"
         id="all"
-        onClick={ () => { setRecipes({}); } }
+        onClick={ handleAllButtonClick }
         value="all"
       >
         All
