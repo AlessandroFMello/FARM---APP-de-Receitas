@@ -32,7 +32,12 @@ function RecipeCard() {
 
   function getClipboard() {
     const { href } = window.location;
-    setClipboard(href);
+    const CUT_IN_PROGRESS = -12;
+    if (href.includes('in-progress')) {
+      setClipboard(href.slice(0, CUT_IN_PROGRESS));
+    } else {
+      setClipboard(href);
+    }
   }
 
   return (
@@ -71,32 +76,34 @@ function RecipeCard() {
         </div>
       </div>
 
-      <h1>Ingredients</h1>
-      <IngredientsList />
-      {
-        pathname.includes('in-progress') && (
-          <Link to="/receitas-feitas">
-            <button
-              disabled={ doneRecipe }
-              data-testid="finish-recipe-btn"
-              type="button"
-              className="button-finish-recipe"
-              onClick={ () => setAnyToLocalStorage(recipe, 'doneRecipes') }
-            >
-              Finalizar Receita
-            </button>
-          </Link>
-        )
-      }
-      <h1>Instructions</h1>
-      <p
-        className="instructions"
-        data-testid="instructions"
-      >
+      <div className="container-recipe">
+        <h1>Ingredients</h1>
+        <IngredientsList />
         {
-          recipe.strInstructions
+          pathname.includes('in-progress') && (
+            <Link to="/receitas-feitas">
+              <button
+                disabled={ doneRecipe }
+                data-testid="finish-recipe-btn"
+                type="button"
+                className="button-finish-recipe"
+                onClick={ () => setAnyToLocalStorage(recipe, 'doneRecipes') }
+              >
+                Finalizar Receita
+              </button>
+            </Link>
+          )
         }
-      </p>
+        <h1>Instructions</h1>
+        <p
+          className="instructions"
+          data-testid="instructions"
+        >
+          {
+            recipe.strInstructions
+          }
+        </p>
+      </div>
 
     </div>
   );
