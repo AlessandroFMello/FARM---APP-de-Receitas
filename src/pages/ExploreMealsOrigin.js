@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -49,12 +50,13 @@ function ExploreMealsOrigin() {
   return (
     <div>
       <Header pageName={ pageName } />
-      <form>
-        <select
+      <Form>
+        <Form.Select
+          size="lg"
           data-testid="explore-by-area-dropdown"
           name="areas"
           id="areas"
-          onChange={ getArea }
+          onChange={ () => getArea() }
         >
           <option
             data-testid="All-option"
@@ -72,13 +74,14 @@ function ExploreMealsOrigin() {
               {strArea}
             </option>
           ))}
-        </select>
-      </form>
+        </Form.Select>
+      </Form>
       <div>
         {meals.map((meal, i) => (
           <Link
             to={ `/comidas/${meal.idMeal}` }
             key={ meal.strMeal }
+            className="link-origin"
           >
             <div
               data-testid={ `${i}-recipe-card` }
