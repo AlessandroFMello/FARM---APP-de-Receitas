@@ -4,7 +4,7 @@ import copy from 'clipboard-copy';
 import { Link } from 'react-router-dom';
 import RecipesContext from '../../context/RecipesContext';
 import shareIcon from '../../images/shareIcon.svg';
-import FavoriteRecipeBtn from './FavoriteRecipeBtn';
+import favoriteIcon from '../../images/blackHeartIcon.svg';
 
 export default function FavoriteRecipeCard({ filterName }) {
   const [haveLink, setHaveLink] = useState(false);
@@ -13,7 +13,10 @@ export default function FavoriteRecipeCard({ filterName }) {
     setFavoriteRecipesFromLocalStorage,
   ] = useState([]);
 
-  const { ifDoesntExistsCreateALocalStorageKey } = useContext(RecipesContext);
+  const {
+    ifDoesntExistsCreateALocalStorageKey,
+    getAnyFromLocalStorage,
+  } = useContext(RecipesContext);
 
   useEffect(() => {
     ifDoesntExistsCreateALocalStorageKey('favoriteRecipes', []);
@@ -48,6 +51,15 @@ export default function FavoriteRecipeCard({ filterName }) {
     if (!haveLink) {
       setHaveLink(true);
     }
+  }
+
+  function removeFavorite({ target }) {
+    const favoriteRecipes = JSON.parse(getAnyFromLocalStorage('favoriteRecipes'));
+    const { name } = target;
+    const removeFromFavorites = favoriteRecipes.filter((el) => el.name !== name);
+    const newLocalStorage = [...removeFromFavorites];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newLocalStorage));
+    setFavoriteRecipesFromLocalStorage(newLocalStorage);
   }
 
   function renderFavoriteRecipes() {
@@ -98,7 +110,15 @@ export default function FavoriteRecipeCard({ filterName }) {
                 src={ shareIcon }
                 type="image"
               />
-              <FavoriteRecipeBtn />
+              <input
+                alt="Favoritar"
+                className="favorite-btn"
+                data-testid={ `${index}-horizontal-favorite-btn` }
+                name={ `${recipe.name}` }
+                onClick={ removeFavorite }
+                src={ favoriteIcon }
+                type="image"
+              />
               {
                 haveLink && (
                   <p className="link-copy">Link copiado!</p>
