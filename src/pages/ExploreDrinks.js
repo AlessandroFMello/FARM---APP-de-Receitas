@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import React from 'react';
@@ -12,7 +11,7 @@ function ExploreDrinks() {
     <div>
       <ExploreHeader pageName={ pageName } />
       <div className="profile-page-container">
-        <Link to="/explorar/comidas">
+        <Link to="/explorar/bebidas/ingredientes">
           <Button
             data-testid="explore-by-ingredient"
             type="button"
@@ -21,7 +20,7 @@ function ExploreDrinks() {
             Por Ingredientes
           </Button>
         </Link>
-        <Link to="/explorar/bebidas">
+        <Link to="/">
           <Button
             data-testid="explore-surprise"
             type="button"
@@ -35,11 +34,5 @@ function ExploreDrinks() {
     </div>
   );
 }
-
-ExploreDrinks.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }).isRequired,
-};
 
 export default ExploreDrinks;
