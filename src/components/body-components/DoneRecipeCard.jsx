@@ -30,30 +30,32 @@ export default function DoneRecipeCard({ filterName }) {
     if (haveLink) {
       timeLink = setTimeout(() => {
         setHaveLink(false);
+        const child = document.getElementsByClassName('link-copy')[0];
+        child.remove();
       }, TIME_OUT_LINK);
     }
     return () => clearTimeout(timeLink);
   }, [haveLink]);
 
-  function getClipboard(urlFragment) {
+  function getClipboard(urlFragment, { target }) {
     const { href } = window.location;
     const tres = 3;
     const domain = href.split('/').slice(0, tres).join('/');
     copy(domain + urlFragment);
+    const father = target.parentElement;
 
+    const child = document.createElement('p');
+    child.innerText = 'Link copiado!';
+    child.className = 'link-copy';
     if (!haveLink) {
       setHaveLink(true);
+      father.appendChild(child);
     }
   }
 
   function renderDoneRecipes() {
     return (
       <div>
-        {
-          haveLink && (
-            <p className="link-copy">Link copiado!</p>
-          )
-        }
         {doneRecipesFromLocalStorage.length > 0
       && doneRecipesFromLocalStorage
         .filter(({ type }) => type.includes(filterName))
@@ -103,7 +105,7 @@ export default function DoneRecipeCard({ filterName }) {
                 className="share-icon"
                 alt="Compartilhar"
                 data-testid={ `${index}-horizontal-share-btn` }
-                onClick={ () => getClipboard(`/${recipe.type}s/${recipe.id}`) }
+                onClick={ (e) => getClipboard(`/${recipe.type}s/${recipe.id}`, e) }
                 src={ shareIcon }
                 type="image"
               />

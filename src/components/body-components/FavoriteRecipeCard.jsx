@@ -37,6 +37,8 @@ export default function FavoriteRecipeCard({ filterName }) {
     if (haveLink) {
       timeLink = setTimeout(() => {
         setHaveLink(false);
+        const child = document.getElementsByClassName('link-copy')[0];
+        child.remove();
       }, TIME_OUT_LINK);
     }
     return () => clearTimeout(timeLink);
@@ -47,9 +49,14 @@ export default function FavoriteRecipeCard({ filterName }) {
     const tres = 3;
     const domain = href.split('/').slice(0, tres).join('/');
     copy(domain + urlFragment);
-    console.log(target);
+    const father = target.parentElement;
+
+    const child = document.createElement('p');
+    child.innerText = 'Link copiado!';
+    child.className = 'link-copy';
     if (!haveLink) {
       setHaveLink(true);
+      father.appendChild(child);
     }
   }
 
@@ -65,11 +72,6 @@ export default function FavoriteRecipeCard({ filterName }) {
   function renderFavoriteRecipes() {
     return (
       <div>
-        {
-          haveLink && (
-            <p className="link-copy">Link copiado!</p>
-          )
-        }
         {favoriteRecipesFromLocalStorage.length > 0
       && favoriteRecipesFromLocalStorage
         .filter(({ type }) => type.includes(filterName))
