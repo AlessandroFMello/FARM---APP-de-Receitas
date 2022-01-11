@@ -4,6 +4,7 @@ import RecipeCard from '../components/body-components/RecipeCard';
 import RecipesContext from '../context/RecipesContext';
 import fetchAPI from '../services/fetchAPI';
 import age from '../images/age.png';
+import GoBack from '../components/header-components/GoBack';
 
 function RecipeDetails() {
   const history = useHistory();
@@ -177,7 +178,10 @@ function RecipeDetails() {
   function renderRecipe() {
     return (
       <div className="recipe-details">
-        <h1>Detalhes da Receita</h1>
+        <div className="recipe-details-header">
+          <GoBack />
+          <h1>Detalhes da Receita</h1>
+        </div>
         <RecipeCard />
         { recipe.type === 'comidas'
           && (

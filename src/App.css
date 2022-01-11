@@ -429,3 +429,24 @@ body {
   padding: 4px;
   width: 60%;
 }
+
+.button-goback {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  font-size: 28px;
+  height: 100%;
+  justify-content: center;
+  left: 15px;
+  position: absolute;
+}
+
+.recipe-details-header {
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.recipe-details-header h1 {
+  margin: 4px;
+}
