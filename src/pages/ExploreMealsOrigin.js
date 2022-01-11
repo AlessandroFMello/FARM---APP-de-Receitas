@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -7,7 +8,7 @@ import fetchAPI from '../services/fetchAPI';
 function ExploreMealsOrigin() {
   const pageName = 'Explorar Origem';
   const [areas, setAreas] = useState([]);
-  const [selectedArea, setSelectedArea] = useState('American');
+  const [selectedArea, setSelectedArea] = useState('All');
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
@@ -22,12 +23,19 @@ function ExploreMealsOrigin() {
 
   useEffect(() => {
     const getMealsByArea = async (area) => {
-      const URL = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`;
-      if (area !== '') {
+      let URL;
+      if (area !== 'All') {
+        URL = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`;
         const response = await fetchAPI(URL);
         const MAX_SLICE = 12;
         setMeals(response.meals.slice(0, MAX_SLICE));
         console.log('[getMealsByArea] Fetch todas comidas de uma area');
+      } else {
+        URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+        const response = await fetchAPI(URL);
+        const MAX_SLICE = 12;
+        setMeals(response.meals.slice(0, MAX_SLICE));
+        console.log('[getMealsByArea] Fetch todas comidas');
       }
     };
     getMealsByArea(selectedArea);
@@ -48,7 +56,13 @@ function ExploreMealsOrigin() {
           id="areas"
           onChange={ getArea }
         >
-          {/* <option>Areas</option> */}
+          <option
+            data-testid="All-option"
+            defaultValue
+          >
+            All
+
+          </option>
           {areas.map(({ strArea }, index) => (
             <option
               data-testid={ `${strArea}-option` }
@@ -62,23 +76,27 @@ function ExploreMealsOrigin() {
       </form>
       <div>
         {meals.map((meal, i) => (
-          <div
+          <Link
+            to={ `/comidas/${meal.idMeal}` }
             key={ meal.strMeal }
-            data-testid={ `${i}-recipe-card` }
           >
-            <img
-              data-testid={ `${i}-card-img` }
-              className="image-details"
-              src={ meal.strMealThumb }
-              alt={ meal.strMeal }
-            />
-            <h2
-              data-testid={ `${i}-card-name` }
+            <div
+              data-testid={ `${i}-recipe-card` }
             >
-              {meal.strMeal}
+              <img
+                data-testid={ `${i}-card-img` }
+                className="image-details"
+                src={ meal.strMealThumb }
+                alt={ meal.strMeal }
+              />
+              <h2
+                data-testid={ `${i}-card-name` }
+              >
+                {meal.strMeal}
 
-            </h2>
-          </div>
+              </h2>
+            </div>
+          </Link>
         ))}
       </div>
       <Footer />
