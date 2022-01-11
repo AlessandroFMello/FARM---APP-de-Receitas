@@ -11,7 +11,7 @@ function ExploreMeals() {
     <div>
       <ExploreHeader pageName={ pageName } />
       <div className="profile-page-container">
-        <Link to="/explorar/comidas">
+        <Link to="/explorar/comidas/ingredientes">
           <Button
             data-testid="explore-by-ingredient"
             type="button"
@@ -20,7 +20,7 @@ function ExploreMeals() {
             Por Ingredientes
           </Button>
         </Link>
-        <Link to="/explorar/bebidas">
+        <Link to="/explorar/comidas/area">
           <Button
             data-testid="explore-by-area"
             type="button"
@@ -29,7 +29,7 @@ function ExploreMeals() {
             Por Local de Origem
           </Button>
         </Link>
-        <Link to="/explorar/bebidas">
+        <Link to="/">
           <Button
             data-testid="explore-surprise"
             type="button"
