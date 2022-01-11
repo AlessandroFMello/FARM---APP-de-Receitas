@@ -39,7 +39,7 @@ function ExploreMeals() {
         </Link>
         <Button
           data-testid="explore-surprise"
-          onClick={ redirectToRandom }
+          onClick={ () => { redirectToRandom(); } }
           type="button"
           variant="outline-dark"
         >
