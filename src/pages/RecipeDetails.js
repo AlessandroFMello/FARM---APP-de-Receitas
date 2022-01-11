@@ -99,6 +99,7 @@ function RecipeDetails() {
           image: element.strDrinkThumb,
           title: element.strDrink,
           type: 'bebidas',
+          id: element.idDrink,
         };
       }
       return {
@@ -106,6 +107,7 @@ function RecipeDetails() {
         image: element.strMealThumb,
         title: element.strMeal,
         type: 'comidas',
+        id: element.idMeal,
       };
     });
   }
@@ -129,39 +131,45 @@ function RecipeDetails() {
     const slicedRecommendations = getRecommendationsValue();
     return (
       slicedRecommendations.map((recomendation, index) => (
-        <div
-          className="recomendation-card"
+        <Link
+          to={ `/${recomendation.type}/${recomendation.id}` }
           key={ `${recomendation}.${index}` }
-          data-testid={ `${index}-recomendation-card` }
+          className="link-recomendation"
         >
-          <img
-            className="img-recomendation"
-            src={ recomendation.image }
-            alt={ recomendation.title }
-          />
-          <p
-            data-testid="recipe-category"
+          <div
+            className="recomendation-card"
+            data-testid={ `${index}-recomendation-card` }
           >
-            { getCategory(recomendation) === 'Alcoholic'
-              ? (
-                <>
-                  <span>{getCategory(recomendation)}</span>
-                  <img
-                    className="image-age-recomendation"
-                    src={ age }
-                    alt="age"
-                  />
-                </>
-              )
-              : getCategory(recomendation) }
-          </p>
-          <h2
-            className="recomendation-title"
-            data-testid={ `${index}-recomendation-title` }
-          >
-            { recomendation.title }
-          </h2>
-        </div>
+            <img
+              className="img-recomendation"
+              src={ recomendation.image }
+              alt={ recomendation.title }
+            />
+            <p
+              data-testid="recipe-category"
+            >
+              { getCategory(recomendation) === 'Alcoholic'
+                ? (
+                  <>
+                    <span>{getCategory(recomendation)}</span>
+                    <img
+                      className="image-age-recomendation"
+                      src={ age }
+                      alt="age"
+                    />
+                  </>
+                )
+                : getCategory(recomendation) }
+            </p>
+            <h2
+              className="recomendation-title"
+              data-testid={ `${index}-recomendation-title` }
+            >
+              { recomendation.title }
+            </h2>
+          </div>
+
+        </Link>
       ))
     );
   }

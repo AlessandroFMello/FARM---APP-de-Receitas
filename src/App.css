@@ -406,3 +406,8 @@ body {
 .card-done-text {
   margin: 0 10px;
 }
+
+.link-recomendation {
+  color: rgb(45, 44, 44);
+  text-decoration: none;
+}
