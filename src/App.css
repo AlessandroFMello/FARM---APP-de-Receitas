@@ -54,18 +54,20 @@ body {
 }
 
 .header-container {
-  background-color: rgb(223, 223, 223);
+  background-color: rgb(227, 224, 224);
   display: flex;
   flex-direction: column;
-  padding: 5px;
 }
 
 .header {
   align-items: center;
+  background-color: rgb(227, 224, 224);
   display: flex;
   flex-direction: row;
+  height: 50px;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 5px 30px;
+  padding-top: 5px;
 }
 
 .search-bar {
@@ -77,11 +79,11 @@ body {
 
 .footer {
   align-items: center;
-  background-color: rgb(218, 218, 218);
+  background-color: rgb(227, 224, 224);
   bottom: 0;
   display: flex;
   flex-direction: row;
-  height: 50px;
+  height: 55px;
   justify-content: space-around;
   position: fixed;
   width: 100vw;
@@ -94,22 +96,27 @@ body {
   flex-direction: row;
   justify-content: center;
   padding-bottom: 55px;
+  padding-top: 5px;
 }
 
 .recipe-card {
   align-items: center;
   display: flex;
   flex-flow: column wrap;
-  padding: 10px;
+  padding: 0 10px;
 }
 
 .recipe-cards > a {
+  box-shadow: 2px 3px 5px 0 rgba(0, 0, 0, 0.2);
+
+  /* box-shadow: -2px -3px -5px 0 rgba(0, 0, 0, 0.2); */
   color: rgb(45, 44, 44);
-  height: 205px;
+  height: auto;
+  margin: 5px;
   overflow: hidden;
   padding-top: 5px;
   text-decoration: none;
-  width: 50%;
+  width: 45%;
 }
 
 .recipe-card h3 {
@@ -123,7 +130,7 @@ body {
 }
 
 .recipe-card img {
-  height: 150px;
+  height: auto;
   width: 100%;
 }
 
@@ -132,13 +139,15 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 80px;
 }
 
 .profile-page-container button {
   align-items: center;
+  background-color: #fafafa;
   display: flex;
   flex-direction: column;
+  font-size: 18px;
   height: 60px;
   justify-content: center;
   margin: 10px;
@@ -149,14 +158,25 @@ body {
   text-decoration: none;
 }
 
+.profile-email {
+  font-size: 20px;
+  padding: 16px;
+}
+
 .start-recipe {
+  align-items: center;
   bottom: 0;
-  font-size: 16px;
+  box-sizing: border-box;
+  display: flex;
+  font-size: 20px;
   height: 41px;
+  justify-content: center;
   left: 50%;
+  padding: 15px;
   position: fixed;
   transform: translateX(-50%);
   width: 100%;
+
 }
 
 .category-container {
@@ -168,6 +188,7 @@ body {
 }
 
 .button-category {
+  box-shadow: 2px 3px 5px 0 rgba(0, 0, 0, 0.2);
   margin-top: 5px;
   width: 100px;
 }
@@ -223,6 +244,12 @@ body {
   width: 26px;
 }
 
+.image-age {
+  height: 26px;
+  margin-left: 5px;
+  width: 26px;
+}
+
 .carousel-recomendation {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -231,10 +258,21 @@ body {
 }
 
 .recomendation-card {
+  box-shadow: 2px 3px 5px 0 rgba(0, 0, 0, 0.5);
   display: inline-block;
-  height: 220px;
+  height: 180px;
+  margin-bottom: 55px;
   margin-left: 22px;
+  padding: 10px;
   width: 150px;
+}
+
+.recomendation-card p {
+  margin: 5px;
+}
+
+.carousel-recomendation h1 {
+  margin: 8px;
 }
 
 .img-recomendation {
@@ -266,8 +304,9 @@ body {
   padding: 0 10px;
 }
 
-.carousel-recomendation h1 {
-  padding: 10px;
+.recomendation-title {
+  font-size: 20px;
+  padding: 5px;
 }
 
 .instructions {
@@ -275,7 +314,43 @@ body {
   text-align: justify;
 }
 
-.image-age {
-  margin-left: 10px;
-  width: 25px;
+.container-ingredientes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 12px;
+  padding-bottom: 65px;
+}
+
+.container-ingredientes > button {
+  box-shadow: 2px 3px 5px 0 rgba(0, 0, 0, 0.3);
+  height: 150px;
+  margin: 5px;
+  margin-bottom: 5px;
+  width: 45%;
+}
+
+.ingredient-card {
+  width: 100%;
+}
+
+.ingredient {
+  font-size: 20px;
+  max-width: 12ch;
+  overflow: hidden;
+  padding-top: 5px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cooking {
+  object-fit: cover;
+  object-position: center 80%;
+  width: 80vw;
+}
+
+.image-age-recomendation {
+  margin: 4px;
+  width: 18px;
 }

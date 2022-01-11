@@ -62,6 +62,7 @@ function ExploreIngredients() {
           >
             <div
               data-testid={ `${index}-ingredient-card` }
+              className="ingredient-card"
             >
               <img
                 data-testid={ `${index}-card-img` }
@@ -70,7 +71,13 @@ function ExploreIngredients() {
                   : `https://www.thecocktaildb.com/images/ingredients/${strIngredient}-Small.png` }
                 alt={ strIngredient }
               />
-              <h2 data-testid={ `${index}-card-name` }>{strIngredient}</h2>
+              <h2
+                data-testid={ `${index}-card-name` }
+                className="ingredient"
+              >
+                {strIngredient}
+
+              </h2>
             </div>
           </button>
         );
@@ -81,7 +88,9 @@ function ExploreIngredients() {
   return (
     <div>
       <ExploreHeader pageName={ pageName } />
-      { renderIngredients() }
+      <div className="container-ingredientes">
+        { renderIngredients() }
+      </div>
       <Footer />
     </div>
   );
