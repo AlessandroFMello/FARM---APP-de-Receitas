@@ -17,6 +17,7 @@ import RecipesMade from './pages/RecipesMade';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import RecipeDetails from './pages/RecipeDetails';
 import RecipeInProgress from './pages/RecipeInProgress';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -72,6 +73,11 @@ function App() {
             exact
             path="/explorar/comidas/area"
             component={ ExploreMealsOrigin }
+          />
+          <Route
+            exact
+            path="/explorar/bebidas/area"
+            component={ NotFound }
           />
           <Route
             exact
