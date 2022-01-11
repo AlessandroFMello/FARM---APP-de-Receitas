@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
+import { Form } from 'react-bootstrap';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -47,36 +47,43 @@ function ExploreMealsOrigin() {
     setSelectedArea(area);
   }
 
+  function renderForm() {
+    return (
+      <Form.Control
+        as="select"
+        size="lg"
+        data-testid="explore-by-area-dropdown"
+        name="areas"
+        id="areas"
+        onChange={ () => getArea() }
+        custom
+        className="select-area"
+      >
+        <option
+          data-testid="All-option"
+          defaultValue
+        >
+          All
+
+        </option>
+        {areas.map(({ strArea }, index) => (
+          <option
+            data-testid={ `${strArea}-option` }
+            key={ `${strArea}-${index}` }
+            value={ strArea }
+          >
+            {strArea}
+          </option>
+        ))}
+      </Form.Control>
+    );
+  }
+
   return (
     <div>
       <Header pageName={ pageName } />
-      <Form>
-        <Form.Select
-          size="lg"
-          data-testid="explore-by-area-dropdown"
-          name="areas"
-          id="areas"
-          onChange={ () => getArea() }
-        >
-          <option
-            data-testid="All-option"
-            defaultValue
-          >
-            All
-
-          </option>
-          {areas.map(({ strArea }, index) => (
-            <option
-              data-testid={ `${strArea}-option` }
-              key={ `${strArea}-${index}` }
-              value={ strArea }
-            >
-              {strArea}
-            </option>
-          ))}
-        </Form.Select>
-      </Form>
-      <div>
+      { renderForm() }
+      <div className="recipe-cards">
         {meals.map((meal, i) => (
           <Link
             to={ `/comidas/${meal.idMeal}` }
@@ -85,6 +92,7 @@ function ExploreMealsOrigin() {
           >
             <div
               data-testid={ `${i}-recipe-card` }
+              className="recipe-card"
             >
               <img
                 data-testid={ `${i}-card-img` }
