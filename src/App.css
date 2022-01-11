@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 body {
   height: 100vh;
   margin: 0;
@@ -353,4 +357,52 @@ body {
 .image-age-recomendation {
   margin: 4px;
   width: 18px;
+}
+
+.card-favorites-container {
+  display: flex;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.card-favorites-link {
+  color: rgb(45, 44, 44);
+  max-height: 100%;
+  text-decoration: none;
+  width: 100%;
+}
+
+.card-favorites-img {
+  height: 120px;
+  object-fit: cover;
+  object-position: center 45%;
+  width: 100vw;
+}
+
+.card-done-container {
+  display: flex;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.card-done-link {
+  color: rgb(45, 44, 44);
+  max-height: 100%;
+  text-decoration: none;
+  width: 100%;
+}
+
+.card-done-img {
+  height: 120px;
+  object-fit: cover;
+  object-position: center 45%;
+  width: 100vw;
+}
+
+.card-favorite-text {
+  margin: 0 10px;
+}
+
+.card-done-text {
+  margin: 0 10px;
 }

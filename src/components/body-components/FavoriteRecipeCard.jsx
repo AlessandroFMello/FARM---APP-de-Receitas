@@ -72,16 +72,18 @@ export default function FavoriteRecipeCard({ filterName }) {
         .map((recipe, index) => (
           <div key={ recipe.name }>
             <div>
-              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+              <Link
+                to={ (`/${recipe.type}s/${recipe.id}`) }
+              >
                 <img
-                  className="img-recomendation"
+                  className="card-favorites-img"
                   data-testid={ `${index}-horizontal-image` }
                   src={ recipe.image }
                   alt={ recipe.name }
                 />
               </Link>
             </div>
-            <div>
+            <div className="card-favorite-text">
               { recipe.type === 'comida' ? (
                 <p
                   data-testid={ `${index}-horizontal-top-text` }
@@ -95,7 +97,10 @@ export default function FavoriteRecipeCard({ filterName }) {
                   { recipe.alcoholicOrNot }
                 </p>
               ) }
-              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+              <Link
+                to={ (`/${recipe.type}s/${recipe.id}`) }
+                className="card-favorites-link"
+              >
                 <h1
                   data-testid={ `${index}-horizontal-name` }
                 >
@@ -132,7 +137,7 @@ export default function FavoriteRecipeCard({ filterName }) {
   }
 
   return (
-    <div>{renderFavoriteRecipes()}</div>
+    <div className="card-favorites-container">{renderFavoriteRecipes()}</div>
   );
 }
 

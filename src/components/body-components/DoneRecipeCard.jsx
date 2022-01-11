@@ -58,14 +58,14 @@ export default function DoneRecipeCard({ filterName }) {
             <div>
               <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
                 <img
-                  className="img-recomendation"
+                  className="card-done-img"
                   data-testid={ `${index}-horizontal-image` }
                   src={ recipe.image }
                   alt={ recipe.name }
                 />
               </Link>
             </div>
-            <div>
+            <div className="card-done-text">
               { recipe.type === 'comida' ? (
                 <p
                   data-testid={ `${index}-horizontal-top-text` }
@@ -79,9 +79,13 @@ export default function DoneRecipeCard({ filterName }) {
                   { recipe.alcoholicOrNot }
                 </p>
               ) }
-              <Link to={ (`/${recipe.type}s/${recipe.id}`) }>
+              <Link
+                className="card-done-link"
+                to={ (`/${recipe.type}s/${recipe.id}`) }
+              >
                 <h1
                   data-testid={ `${index}-horizontal-name` }
+                  className="card-done-link"
                 >
                   {recipe.name}
                 </h1>
@@ -122,7 +126,7 @@ export default function DoneRecipeCard({ filterName }) {
   }
 
   return (
-    <div>{renderDoneRecipes()}</div>
+    <div className="card-done-container">{renderDoneRecipes()}</div>
   );
 }
 
