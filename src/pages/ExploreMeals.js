@@ -1,11 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import ExploreHeader from '../components/ExploreHeader';
 import Footer from '../components/Footer';
+import fetchAPI from '../services/fetchAPI';
 
 function ExploreMeals() {
   const pageName = 'Explorar Comidas';
+  const history = useHistory();
+
+  async function redirectToRandom() {
+    const URL = 'https://www.themealdb.com/api/json/v1/1/random.php';
+    const response = await fetchAPI(URL);
+    history.push(`/comidas/${response.meals[0].idMeal}`);
+  }
 
   return (
     <div>
@@ -29,15 +37,14 @@ function ExploreMeals() {
             Por Local de Origem
           </Button>
         </Link>
-        <Link to="/">
-          <Button
-            data-testid="explore-surprise"
-            type="button"
-            variant="outline-dark"
-          >
-            Me Surpreenda!
-          </Button>
-        </Link>
+        <Button
+          data-testid="explore-surprise"
+          onClick={ redirectToRandom }
+          type="button"
+          variant="outline-dark"
+        >
+          Me Surpreenda!
+        </Button>
       </div>
       <Footer />
     </div>
