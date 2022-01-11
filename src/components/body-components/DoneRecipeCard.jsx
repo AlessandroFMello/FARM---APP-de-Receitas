@@ -49,7 +49,11 @@ export default function DoneRecipeCard({ filterName }) {
   function renderDoneRecipes() {
     return (
       <div>
-        {console.log(doneRecipesFromLocalStorage)}
+        {
+          haveLink && (
+            <p className="link-copy">Link copiado!</p>
+          )
+        }
         {doneRecipesFromLocalStorage.length > 0
       && doneRecipesFromLocalStorage
         .filter(({ type }) => type.includes(filterName))
@@ -103,11 +107,6 @@ export default function DoneRecipeCard({ filterName }) {
                 src={ shareIcon }
                 type="image"
               />
-              {
-                haveLink && (
-                  <p className="link-copy">Link copiado!</p>
-                )
-              }
               {
                 doneRecipesFromLocalStorage[index].tags.map((tag) => (
                   <p

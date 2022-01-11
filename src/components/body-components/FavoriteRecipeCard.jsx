@@ -42,12 +42,12 @@ export default function FavoriteRecipeCard({ filterName }) {
     return () => clearTimeout(timeLink);
   }, [haveLink]);
 
-  function getClipboard(urlFragment) {
+  function getClipboard(urlFragment, { target }) {
     const { href } = window.location;
     const tres = 3;
     const domain = href.split('/').slice(0, tres).join('/');
     copy(domain + urlFragment);
-
+    console.log(target);
     if (!haveLink) {
       setHaveLink(true);
     }
@@ -65,7 +65,11 @@ export default function FavoriteRecipeCard({ filterName }) {
   function renderFavoriteRecipes() {
     return (
       <div>
-        {console.log(favoriteRecipesFromLocalStorage)}
+        {
+          haveLink && (
+            <p className="link-copy">Link copiado!</p>
+          )
+        }
         {favoriteRecipesFromLocalStorage.length > 0
       && favoriteRecipesFromLocalStorage
         .filter(({ type }) => type.includes(filterName))
@@ -111,7 +115,7 @@ export default function FavoriteRecipeCard({ filterName }) {
                 className="share-icon"
                 alt="Compartilhar"
                 data-testid={ `${index}-horizontal-share-btn` }
-                onClick={ () => getClipboard(`/${recipe.type}s/${recipe.id}`) }
+                onClick={ (e) => getClipboard(`/${recipe.type}s/${recipe.id}`, e) }
                 src={ shareIcon }
                 type="image"
               />
@@ -124,11 +128,6 @@ export default function FavoriteRecipeCard({ filterName }) {
                 src={ favoriteIcon }
                 type="image"
               />
-              {
-                haveLink && (
-                  <p className="link-copy">Link copiado!</p>
-                )
-              }
             </div>
           </div>
         ))}
