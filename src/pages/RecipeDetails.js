@@ -3,6 +3,7 @@ import { Link, useHistory, useParams, useLocation } from 'react-router-dom';
 import RecipeCard from '../components/body-components/RecipeCard';
 import RecipesContext from '../context/RecipesContext';
 import fetchAPI from '../services/fetchAPI';
+import age from '../images/age.png';
 
 function RecipeDetails() {
   const history = useHistory();
@@ -116,7 +117,6 @@ function RecipeDetails() {
         <button
           className="start-recipe"
           data-testid="start-recipe-btn"
-          style={ { padding: '15px' } }
           type="button"
         >
           {text}
@@ -139,7 +139,22 @@ function RecipeDetails() {
             src={ recomendation.image }
             alt={ recomendation.title }
           />
-          <p>{getCategory(recomendation)}</p>
+          <p
+            data-testid="recipe-category"
+          >
+            { getCategory(recomendation) === 'Alcoholic'
+              ? (
+                <>
+                  <span>{getCategory(recomendation)}</span>
+                  <img
+                    className="image-age-recomendation"
+                    src={ age }
+                    alt="age"
+                  />
+                </>
+              )
+              : getCategory(recomendation) }
+          </p>
           <h2
             className="recomendation-title"
             data-testid={ `${index}-recomendation-title` }

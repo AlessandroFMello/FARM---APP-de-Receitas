@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ExploreHeader from '../components/ExploreHeader';
 import Footer from '../components/Footer';
+import cooking from '../images/cooking.gif';
 
 function Explore() {
   const pageName = 'Explorar';
@@ -29,10 +30,14 @@ function Explore() {
             Explorar Bebidas
           </Button>
         </Link>
+        <img
+          src={ cooking }
+          alt="cozinhando"
+          className="cooking"
+        />
       </div>
       <Footer />
     </div>
   );
 }
-
 export default Explore;

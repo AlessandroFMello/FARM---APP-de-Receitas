@@ -12,14 +12,17 @@ function ProfilePage() {
 
   return (
     <div className="profile-page-container">
-      <div data-testid="profile-email">
+      <div
+        className="profile-email"
+        data-testid="profile-email"
+      >
         {recoverFromLocalStorage()}
       </div>
       <Link to="/receitas-feitas">
         <Button
           data-testid="profile-done-btn"
           type="button"
-          variant="secondary"
+          variant="outline-dark"
         >
           Receitas Feitas
         </Button>
@@ -28,7 +31,7 @@ function ProfilePage() {
         <Button
           data-testid="profile-favorite-btn"
           type="button"
-          variant="secondary"
+          variant="outline-dark"
         >
           Receitas Favoritas
         </Button>
@@ -37,7 +40,7 @@ function ProfilePage() {
         <Button
           data-testid="profile-logout-btn"
           type="button"
-          variant="secondary"
+          variant="outline-dark"
           onClick={ () => localStorage.clear() }
         >
           Sair
