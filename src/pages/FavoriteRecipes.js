@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import FavoriteRecipesCard from '../components/body-components/FavoriteRecipesCard';
 import ExploreHeader from '../components/ExploreHeader';
 
 function FavoriteRecipes() {
@@ -8,14 +8,9 @@ function FavoriteRecipes() {
   return (
     <div>
       <ExploreHeader pageName={ pageName } />
+      <FavoriteRecipesCard />
     </div>
   );
 }
-
-FavoriteRecipes.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }).isRequired,
-};
 
 export default FavoriteRecipes;

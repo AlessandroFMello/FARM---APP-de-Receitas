@@ -67,7 +67,7 @@ function RecipesProvider({ children }) {
     const area = actualRecipe.strArea || '';
     const category = actualRecipe.strCategory || '';
     let teste = false;
-    if (actualRecipe.strTags !== null) {
+    if (actualRecipe.strTags && actualRecipe.strTags !== null) {
       teste = actualRecipe.strTags.split(', ');
     }
     const tags = teste || [];
