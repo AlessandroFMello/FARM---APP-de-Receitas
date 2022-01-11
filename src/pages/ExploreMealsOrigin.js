@@ -55,7 +55,7 @@ function ExploreMealsOrigin() {
         data-testid="explore-by-area-dropdown"
         name="areas"
         id="areas"
-        onChange={ () => getArea() }
+        onChange={ (e) => getArea(e) }
         custom
         className="select-area"
       >
