@@ -569,3 +569,7 @@ body {
 .farm {
   font-size: 12px;
 }
+
+.password-div {
+  position: relative;
+}

@@ -68,16 +68,18 @@ function LoginPage({ history }) {
             />
 
           </Form.Label>
-          <button
-            type="button"
-            onClick={ () => eyePassword() }
-            className="button-visible"
-          >
-            { !visible
-              ? <AiOutlineEyeInvisible className="icon-eye" />
-              : <AiOutlineEye className="icon-eye" /> }
+          <div className="password-div">
+            <button
+              type="button"
+              onClick={ () => eyePassword() }
+              className="button-visible"
+            >
+              { !visible
+                ? <AiOutlineEyeInvisible className="icon-eye" />
+                : <AiOutlineEye className="icon-eye" /> }
 
-          </button>
+            </button>
+          </div>
           <Button
             data-testid="login-submit-btn"
             disabled={ validateLogin() }
