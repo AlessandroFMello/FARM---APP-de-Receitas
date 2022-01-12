@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { InputGroup, FormControl, Button, FormLabel } from 'react-bootstrap';
 import RecipesContext from '../../context/RecipesContext';
 import fetchAPI from '../../services/fetchAPI';
 
@@ -62,61 +63,70 @@ function SearchBar() {
 
   return (
     <div>
-      <form className="search-bar" onSubmit={ handleSubmit }>
-        <label htmlFor="search-input">
-          <input
-            type="text"
-            data-testid="search-input"
-            value={ searchBarInput }
-            onChange={ handleInput }
-          />
-        </label>
-        <label htmlFor="ingrediente">
-          <input
-            type="radio"
-            className="search-bar-radio"
-            data-testid="ingredient-search-radio"
-            id="ingrediente"
-            name="search-bar-radio"
-            value="ingrediente"
-            checked={ radioValue === 'ingrediente' }
-            onChange={ (e) => setRadioValue(e.target.value) }
-          />
-          Ingrediente
-        </label>
-        <label htmlFor="nome">
-          <input
-            type="radio"
-            className="search-bar-radio"
-            data-testid="name-search-radio"
-            id="nome"
-            name="search-bar-radio"
-            value="nome"
-            checked={ radioValue === 'nome' }
-            onChange={ (e) => setRadioValue(e.target.value) }
-          />
-          Nome
-        </label>
-        <label htmlFor="primeira-letra">
-          <input
-            type="radio"
-            className="search-bar-radio"
-            data-testid="first-letter-search-radio"
-            id="primeira-letra"
-            name="search-bar-radio"
-            value="primeiraLetra"
-            checked={ radioValue === 'primeiraLetra' }
-            onChange={ (e) => setRadioValue(e.target.value) }
-          />
-          Primeira Letra
-        </label>
+      <form className="search-bar" onSubmit={ (e) => handleSubmit(e) }>
+        <InputGroup className="mb-1 center">
+          <InputGroup.Prepend className="agoravai">
+            <FormControl
+              aria-label="Default"
+              aria-describedby="basic-addon1"
+              data-testid="search-input"
+              value={ searchBarInput }
+              nome="pesquisar"
+              onChange={ (e) => handleInput(e) }
+              placeholder="Digite sua busca"
+            />
+            <Button
+              variant="outline-secondary"
+              type="submit"
+              data-testid="exec-search-btn"
+            >
+              Buscar
+            </Button>
+          </InputGroup.Prepend>
+        </InputGroup>
+        <div className="box-radio">
 
-        <button
-          type="submit"
-          data-testid="exec-search-btn"
-        >
-          Buscar
-        </button>
+          <FormLabel htmlFor="ingrediente">
+            <InputGroup.Radio
+              type="radio"
+              className="search-bar-radio"
+              data-testid="ingredient-search-radio"
+              id="ingrediente"
+              name="search-bar-radio"
+              value="ingrediente"
+              checked={ radioValue === 'ingrediente' }
+              onChange={ (e) => setRadioValue(e.target.value) }
+            />
+            <InputGroup.Text>Ingrediente</InputGroup.Text>
+          </FormLabel>
+
+          <FormLabel htmlFor="nome">
+            <InputGroup.Radio
+              type="radio"
+              className="search-bar-radio"
+              data-testid="name-search-radio"
+              id="nome"
+              name="search-bar-radio"
+              value="nome"
+              checked={ radioValue === 'nome' }
+              onChange={ (e) => setRadioValue(e.target.value) }
+            />
+            <InputGroup.Text>Nome</InputGroup.Text>
+          </FormLabel>
+          <FormLabel htmlFor="primeira-letra">
+            <InputGroup.Radio
+              type="radio"
+              className="search-bar-radio"
+              data-testid="first-letter-search-radio"
+              id="primeira-letra"
+              name="search-bar-radio"
+              value="primeiraLetra"
+              checked={ radioValue === 'primeiraLetra' }
+              onChange={ (e) => setRadioValue(e.target.value) }
+            />
+            <InputGroup.Text>Primeira letra</InputGroup.Text>
+          </FormLabel>
+        </div>
       </form>
     </div>
   );

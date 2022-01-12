@@ -80,6 +80,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .footer {
@@ -460,4 +461,61 @@ body {
 
 .icon-eye {
   font-size: 20px;
+}
+
+.box-radio {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.box-radio label {
+  display: flex;
+}
+
+.input-group .mb1 {
+  text-align: center;
+  width: 80%;
+}
+
+.input-group-prepend {
+  display: flex;
+  margin: 2px;
+  padding: 2px;
+}
+
+.form-label {
+  display: flex;
+}
+
+.form-label > span {
+  border: none;
+  height: 35px;
+  padding: 0 5px;
+}
+
+.form-control {
+  flex: none;
+  min-width: 0;
+  padding: 0;
+  position: relative;
+  width: 0;
+}
+
+.agoravai {
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+}
+
+.agoravai > button {
+  width: 70px;
+}
+
+.agoravai > input {
+  text-align: center;
+}
+
+.center {
+  justify-content: center;
 }
