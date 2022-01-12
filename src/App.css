@@ -131,13 +131,15 @@ body {
 }
 
 .recipe-card h3 {
-  font-size: 20px;
-  max-width: 12ch;
+  background-color: rgb(227, 224, 224);
+  font-size: 16px;
+  margin-top: 5px;
   overflow: hidden;
-  padding-top: 5px;
+  padding: 5px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 100%;
 }
 
 .recipe-card img {
