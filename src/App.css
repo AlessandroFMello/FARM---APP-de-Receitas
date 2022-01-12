@@ -118,6 +118,7 @@ body {
 }
 
 .recipe-cards > a {
+  border-radius: 7px;
   box-shadow: 2px 3px 5px 0 rgba(0, 0, 0, 0.2);
 
   /* box-shadow: -2px -3px -5px 0 rgba(0, 0, 0, 0.2); */
@@ -554,9 +555,11 @@ body {
 }
 
 .image-gravatar {
+  border: 2px solid rgb(58, 57, 63);
   border-radius: 50%;
   width: 120px;
   z-index: 2;
+
 }
 
 .svg {
