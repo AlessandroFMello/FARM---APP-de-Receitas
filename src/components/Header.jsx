@@ -31,7 +31,7 @@ function Header(props) {
       <div className="header">
         <ProfileBtn />
 
-        <h1 data-testid="page-title">{ pageName }</h1>
+        <h2 data-testid="page-title">{ pageName }</h2>
 
         <SearchBtn displaySearchBar={ displaySearchBar } />
       </div>
