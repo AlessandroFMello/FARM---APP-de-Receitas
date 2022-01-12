@@ -519,3 +519,8 @@ body {
 .center {
   justify-content: center;
 }
+
+.image-gravatar {
+  border-radius: 45px;
+  width: 100px;
+}
