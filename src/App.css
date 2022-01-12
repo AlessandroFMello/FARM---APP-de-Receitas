@@ -554,8 +554,8 @@ body {
 }
 
 .image-gravatar {
-  border-radius: 45px;
-  width: 100px;
+  border-radius: 50%;
+  width: 120px;
   z-index: 2;
 }
 
