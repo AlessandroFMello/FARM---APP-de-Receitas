@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import foodGif from '../images/foodGif.gif';
 
 function LoginPage({ history }) {
@@ -11,6 +12,8 @@ function LoginPage({ history }) {
   const [password, setPassword] = useState({
     password: '',
   });
+
+  const [visible, setVisible] = useState(false);
 
   function validateLogin() {
     const regexEmail = /\S+@\S+\.\S+/;
@@ -27,6 +30,14 @@ function LoginPage({ history }) {
     localStorage.setItem('cocktailsToken', JSON.stringify(1));
     localStorage.setItem('user', JSON.stringify(email));
     history.push('/comidas');
+  }
+
+  function eyePassword() {
+    if (!visible) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
   }
 
   return (
@@ -50,10 +61,21 @@ function LoginPage({ history }) {
               id="password"
               onChange={ ({ target }) => setPassword({ password: target.value }) }
               placeholder="Senha"
-              type="password"
+              type={ !visible ? 'password' : 'text' }
               value={ password.password }
             />
+
           </Form.Label>
+          <button
+            type="button"
+            onClick={ () => eyePassword() }
+            className="button-visible"
+          >
+            { !visible
+              ? <AiOutlineEyeInvisible className="icon-eye" />
+              : <AiOutlineEye className="icon-eye" /> }
+
+          </button>
           <Button
             data-testid="login-submit-btn"
             disabled={ validateLogin() }

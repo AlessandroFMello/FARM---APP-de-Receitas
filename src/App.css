@@ -450,3 +450,14 @@ body {
 .recipe-details-header h1 {
   margin: 4px;
 }
+
+.button-visible {
+  background-color: transparent;
+  position: absolute;
+  right: 90px;
+  z-index: 5;
+}
+
+.icon-eye {
+  font-size: 20px;
+}
