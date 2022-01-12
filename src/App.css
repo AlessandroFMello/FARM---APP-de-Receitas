@@ -571,7 +571,7 @@ body {
 }
 
 .password-div {
+  bottom: 40px;
+  left: 195px;
   position: relative;
-  right: 3px;
-  top: 0;
 }
