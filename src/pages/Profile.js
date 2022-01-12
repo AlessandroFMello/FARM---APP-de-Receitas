@@ -9,7 +9,7 @@ function Profile() {
 
   return (
     <div>
-      <ExploreHeader pageName={ pageName } />
+      <ExploreHeader pageName={ pageName } className="header-profile" />
       <ProfilePage />
       <Footer />
     </div>

@@ -6,6 +6,7 @@ function ExploreBtn() {
   return (
     <Link to="/explorar">
       <input
+        className="svg"
         type="image"
         data-testid="explore-bottom-btn"
         src={ exploreIcon }

@@ -9,6 +9,7 @@ function DrinksBtn() {
   return (
     <Link to="/bebidas">
       <input
+        className="svg"
         type="image"
         data-testid="drinks-bottom-btn"
         src={ drinkIcon }

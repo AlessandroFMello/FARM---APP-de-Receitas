@@ -9,6 +9,7 @@ function MealsBtn() {
   return (
     <Link to="/comidas">
       <input
+        className="svg"
         type="image"
         data-testid="food-bottom-btn"
         src={ mealIcon }

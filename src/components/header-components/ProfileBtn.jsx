@@ -9,7 +9,7 @@ function ProfileBtn() {
       <Link to="/perfil">
         <input
           type="image"
-          className="profile-top-btn"
+          className="profile-top-btn svg"
           src={ profileIcon }
           alt="profileIcon"
           data-testid="profile-top-btn"

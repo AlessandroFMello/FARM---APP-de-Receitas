@@ -8,6 +8,7 @@ function SearchBtn(props) {
   return (
     <div>
       <input
+        className="svg"
         alt="searchIcon"
         data-testid="search-top-btn"
         onClick={ displaySearchBar }
