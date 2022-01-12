@@ -61,8 +61,10 @@ function LoginPage({ history }) {
               id="password"
               onChange={ ({ target }) => setPassword({ password: target.value }) }
               placeholder="Senha"
-              type={ !visible ? 'password' : 'text' }
+              type={ !visible ? 'password' : 'number' }
               value={ password.password }
+              pattern="[0-9]*"
+              inputmode="numeric"
             />
 
           </Form.Label>
