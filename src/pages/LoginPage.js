@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineCopyrightCircle } from 'react-icons/ai';
 import foodGif from '../images/foodGif.gif';
 
 function LoginPage({ history }) {
@@ -85,6 +87,10 @@ function LoginPage({ history }) {
             Entrar
           </Button>
         </form>
+        <p className="farm">
+          <AiOutlineCopyrightCircle />
+          Product by FARM
+        </p>
       </div>
     </div>
   );

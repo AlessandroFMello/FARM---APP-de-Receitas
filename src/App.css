@@ -561,3 +561,7 @@ body {
   filter: invert(38%)
     sepia(1%) saturate(1150%) hue-rotate(202deg) brightness(95%) contrast(93%);
 }
+
+.farm {
+  font-size: 12px;
+}
